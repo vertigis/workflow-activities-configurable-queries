@@ -62,9 +62,9 @@ To use the Configured Query Workflow, download the content.json to your local ma
  - searchFields (Required): An array of SearchField objects.
  - eventSubWorkflow (Optional): The Url to a subworkflow to be executed when a form event is fired. The SearchFields, event type, event data and form state are passed to the subworkflow.
  #### Workflow Outputs:
- action: The form action.
- formState: The state of the form.
- queryResults: The results of the configured query if the workflow was not cancelled.
+ - action: The form action.
+ - formState: The state of the form.
+ - queryResults: The results of the configured query if the workflow was not cancelled.
 
  ## Select Query Workflow
  The [Select Query Workflow](../main/workflows/SelectQuery/content.json) presents the user with a list of queries to execute and runs the Configured Query Workflow in a Run Workflow activity.
