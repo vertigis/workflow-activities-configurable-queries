@@ -1,4 +1,3 @@
-# workflow-activities-configurable-queries
 This project contains activities for generating and executing configurable queries.  A configurable query workflow is comprised of a dynamically generated form and dynamically generated where clause to be applied to an ArcGIS Feature Query.  Queries are configured using a collection of SearchFields, which define the field, form element and operation to be applied to a Feature Layer query. The project also includes a complete Workflow implementation.
 
 ## Search Field 
