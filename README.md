@@ -52,7 +52,7 @@ The [Add Query Elements](../main/src/activities/AddQueryElements.ts) activity ac
 }
 ```
 ## Configured Query Workflow
-The [Configured Query Workflow](../main/src/workflows/ConfiguredQuery/content.json) is a full implementation of a configurable query form.  It can be used as-is, run as a SubWorkflow from another Workflow or modified to meet your needs.
+The [Configured Query Workflow](../main/workflows/ConfiguredQuery/content.json) is a full implementation of a configurable query form.  It can be used as-is, run as a SubWorkflow from another Workflow or modified to meet your needs.
 ### Usage
 To use the Configured Query Workflow, download the content.json to your local machine and import it into your Portal using VertiGIS Studio Workflow designer.  
 #### Workflow Inputs:
@@ -67,7 +67,7 @@ To use the Configured Query Workflow, download the content.json to your local ma
  queryResults: The results of the configured query if the workflow was not cancelled.
 
  ## Select Query Workflow
- The [Select Query Workflow](../main/src/workflows/SelectQuery/content.json) presents the user with a list of queries to execute and runs the Configured Query Workflow in a Run Workflow activity.
+ The [Select Query Workflow](../main/workflows/SelectQuery/content.json) presents the user with a list of queries to execute and runs the Configured Query Workflow in a Run Workflow activity.
 ### Usage
 To use the Select Query Workflow, download the content.json to your local machine and import it into your Portal using VertiGIS Studio Workflow designer.
 #### Workflow Inputs:
