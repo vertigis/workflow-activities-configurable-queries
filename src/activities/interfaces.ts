@@ -2,38 +2,38 @@
 import { defs } from "@vertigis/workflow/forms/FormHost";
 
 export interface SearchField {
-    field: string,
-    operator: string,
-    cascade: boolean | string,
+    field: string;
+    operator: string;
+    cascade: boolean | string;
     type:
-    | "AutoComplete"
-    | "CheckBox"
-    | "CheckGroup"
-    | "DatePicker"
-    | "DateRangePicker"
-    | "DateTimePicker"
-    | "DropDownList"
-    | "ItemPicker"
-    | "ListBox"
-    | "Number"
-    | "NumberRangeSlider"
-    | "NumberSlider"
-    | "RadioGroup"
-    | "TextArea"
-    | "TextBox"
-    | "TimePicker"
-    | string;
-    
+        | "AutoComplete"
+        | "CheckBox"
+        | "CheckGroup"
+        | "DatePicker"
+        | "DateRangePicker"
+        | "DateTimePicker"
+        | "DropDownList"
+        | "ItemPicker"
+        | "ListBox"
+        | "Number"
+        | "NumberRangeSlider"
+        | "NumberSlider"
+        | "RadioGroup"
+        | "TextArea"
+        | "TextBox"
+        | "TimePicker"
+        | string;
+
     title: string;
     description?: string;
     value?: defs.Value;
     events?: {
-        changed?: string | undefined,
-        clicked?: string | undefined,
-        populate?: string | undefined,
-        suggest?: string | undefined,
-        validate?: string | undefined,
-    },
+        changed?: string | undefined;
+        clicked?: string | undefined;
+        populate?: string | undefined;
+        suggest?: string | undefined;
+        validate?: string | undefined;
+    };
     element?: defs.Element;
 }
 
@@ -59,13 +59,15 @@ export enum EsriFieldType {
     Double = "double",
     Date = "date",
     Guid = "guid",
-    GlobalId = "global-id"
+    GlobalId = "global-id",
 }
 
-export type ElementValue = boolean | string | number | Date | number[] | Date[] | File[] | defs.Item[];
-
-
-
-
-
-
+export type ElementValue =
+    | boolean
+    | string
+    | number
+    | Date
+    | number[]
+    | Date[]
+    | File[]
+    | defs.Item[];

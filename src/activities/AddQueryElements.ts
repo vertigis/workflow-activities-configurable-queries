@@ -11,7 +11,13 @@ import { SetFormElementItemProperty } from "@vertigis/workflow/activities/forms/
 import { SetFormElementItems } from "@vertigis/workflow/activities/forms/SetFormElementItems";
 import { Lookup } from "@vertigis/workflow/Collections";
 import { ElementValue, SearchField } from "./interfaces";
-import { isDataRef, isDateRangeRef, isDateTimeRef, isItemsRef, isNumberRef } from "@vertigis/workflow/forms/utils";
+import {
+    isDataRef,
+    isDateRangeRef,
+    isDateTimeRef,
+    isItemsRef,
+    isNumberRef,
+} from "@vertigis/workflow/forms/utils";
 import GenerateWhereClause from "./GenerateQueryWhereClause";
 import Query from "@arcgis/core/rest/support/Query";
 import GetLayerCodedValues from "./GetLayerCodedValues";
@@ -34,7 +40,10 @@ export interface QueryProperties {
      * @required
      */
 
-    layer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.SubtypeSublayer;
+    layer:
+        | __esri.FeatureLayer
+        | __esri.SubtypeGroupLayer
+        | __esri.SubtypeSublayer;
     /**
      * @description The title of the Query Form.
      * @required
@@ -43,9 +52,9 @@ export interface QueryProperties {
     title: string;
 
     /**
-    * @description The description of the Query Form (optional).
-    * @required
-    */
+     * @description The description of the Query Form (optional).
+     * @required
+     */
     description?: string;
 
     /**
@@ -53,7 +62,6 @@ export interface QueryProperties {
      */
     where?: string;
 }
-
 
 interface AddQueryOutputs {
     /**
@@ -69,7 +77,8 @@ interface AddQueryOutputs {
  * @supportedApps EXB, GWV
  */
 export default class AddQueryElements implements IActivityHandler {
-    searchFieldTypes = ["AutoComplete",
+    searchFieldTypes = [
+        "AutoComplete",
         "CheckBox",
         "CheckGroup",
         "DatePicker",
@@ -84,9 +93,13 @@ export default class AddQueryElements implements IActivityHandler {
         "RadioGroup",
         "TextArea",
         "TextBox",
-        "TimePicker"];
+        "TimePicker",
+    ];
 
-    async execute(inputs: QueryProperties, context: IActivityContext): Promise<AddQueryOutputs> {
+    async execute(
+        inputs: QueryProperties,
+        context: IActivityContext,
+    ): Promise<AddQueryOutputs> {
         const { searchFields, form, layer, where, title, description } = inputs;
         if (!layer) {
             throw new Error("layer is required");
@@ -101,62 +114,97 @@ export default class AddQueryElements implements IActivityHandler {
             throw new Error("title is required");
         }
 
-
         let i = 0;
         const addElement = new AddFormElement();
         const setItems = new SetFormElementItems();
         if (!form.state["querySection"]) {
             const section = {
                 title: title,
-                description: description
+                description: description,
             };
-            await addElement.execute({
-                elementName: "querySection",
-                elementType: "Section",
-                form: form,
-                element: section
-            }, context);
-
+            await addElement.execute(
+                {
+                    elementName: "querySection",
+                    elementType: "Section",
+                    form: form,
+                    element: section,
+                },
+                context,
+            );
         }
 
         for (const searchField of searchFields) {
-            if (!this.searchFieldTypes.some(x => x === searchField.type)) {
-                throw new Error(`Unsupported Form Element: ${searchField.type}`);
+            if (!this.searchFieldTypes.some((x) => x === searchField.type)) {
+                throw new Error(
+                    `Unsupported Form Element: ${searchField.type}`,
+                );
             }
-            let newElement: defs.Element = searchField.element ? searchField.element : 
-            {
-                selectionMode: "multiple",
-            };
+            let newElement: defs.Element = searchField.element
+                ? searchField.element
+                : {
+                      selectionMode: "multiple",
+                  };
             newElement.type = searchField.type;
             newElement.rowNumber = i + 3;
-            newElement.section = { "name": "querySection" };
-            newElement.dependsOn = this.setCascade(searchField, searchFields, i);
+            newElement.section = { name: "querySection" };
+            newElement.dependsOn = this.setCascade(
+                searchField,
+                searchFields,
+                i,
+            );
             newElement.title = searchField.title;
             newElement.description = searchField.description;
 
             let items: Lookup<defs.Item> = {};
 
-            const elementHasItems = ["CheckGroup", "DropDownList", "ItemPicker", "ListBox", "RadioGroup"].some(x => x === searchField.type);
+            const elementHasItems = [
+                "CheckGroup",
+                "DropDownList",
+                "ItemPicker",
+                "ListBox",
+                "RadioGroup",
+            ].some((x) => x === searchField.type);
             if (elementHasItems && !searchField.cascade) {
-                items = await this.setElementItems(where, searchField, searchFields, layer, form, false, context);
-
-
+                items = await this.setElementItems(
+                    where,
+                    searchField,
+                    searchFields,
+                    layer,
+                    form,
+                    false,
+                    context,
+                );
             }
-            await addElement.execute({
-                elementName: searchField.field,
-                elementType: searchField.type,
-                form: form,
-                element: newElement
-            }, context);
+            await addElement.execute(
+                {
+                    elementName: searchField.field,
+                    elementType: searchField.type,
+                    form: form,
+                    element: newElement,
+                },
+                context,
+            );
 
             newElement = form.state[searchField.field];
             if (Object.keys(items).length != 0) {
-                await setItems.execute({ form: form, items: items, elementName: searchField.field }, context);
+                await setItems.execute(
+                    {
+                        form: form,
+                        items: items,
+                        elementName: searchField.field,
+                    },
+                    context,
+                );
             }
 
             if (searchField.value && !searchField.cascade) {
                 newElement.value = searchField.value;
-                await this.setItemState(newElement, form, searchField.field, context);
+                await this.setItemState(
+                    newElement,
+                    form,
+                    searchField.field,
+                    context,
+                );
                 (form as any).route = true;
             }
             if (searchField.events) {
@@ -165,36 +213,63 @@ export default class AddQueryElements implements IActivityHandler {
             i++;
         }
         return {
-            result: inputs.form
+            result: inputs.form,
         };
     }
 
-    private setCascade(searchField: SearchField, searchFields: SearchField[], index: number): string | undefined {
-        if(typeof searchField.cascade === "string") {
+    private setCascade(
+        searchField: SearchField,
+        searchFields: SearchField[],
+        index: number,
+    ): string | undefined {
+        if (typeof searchField.cascade === "string") {
             return searchField.cascade;
-        } else if(searchField.cascade === true) {
+        } else if (searchField.cascade === true) {
             return searchFields[index - 1].field;
         }
         return undefined;
     }
-    private async setItemState(element: defs.Element, form: DisplayFormOutputs, elementId: string, context: IActivityContext) {
+    private async setItemState(
+        element: defs.Element,
+        form: DisplayFormOutputs,
+        elementId: string,
+        context: IActivityContext,
+    ) {
         const value = this.getFormElementValue(element);
-        if (value && value != null && element.items && Object.keys(element.items).length != 0) {
+        if (
+            value &&
+            value != null &&
+            element.items &&
+            Object.keys(element.items).length != 0
+        ) {
             if (Array.isArray(value) && isItemsRef(value as defs.Value)) {
-                await this.setMultipleItemsState(value as defs.Item[], form, elementId, context);
+                await this.setMultipleItemsState(
+                    value as defs.Item[],
+                    form,
+                    elementId,
+                    context,
+                );
             } else {
                 const setCurrent = new SetCurrentFormElementItem();
-                await setCurrent.execute({
-                    form: form,
-                    elementName: elementId,
-                    matchType: "value",
-                    value: value
-                }, context);
+                await setCurrent.execute(
+                    {
+                        form: form,
+                        elementName: elementId,
+                        matchType: "value",
+                        value: value,
+                    },
+                    context,
+                );
             }
         }
     }
 
-    private async setMultipleItemsState(items: defs.Item[], form: DisplayFormOutputs, elementId: string, context: IActivityContext) {
+    private async setMultipleItemsState(
+        items: defs.Item[],
+        form: DisplayFormOutputs,
+        elementId: string,
+        context: IActivityContext,
+    ) {
         const setItemProperty = new SetFormElementItemProperty();
         const keys: string[] = [];
         const element = form.state[elementId];
@@ -206,50 +281,83 @@ export default class AddQueryElements implements IActivityHandler {
                 }
             }
             for (const key of keys) {
-                await setItemProperty.execute({
-                    form: form,
-                    itemKey: key,
-                    propertyName: "checked",
-                    elementName: elementId,
-                    propertyValue: true
-                }, context);
+                await setItemProperty.execute(
+                    {
+                        form: form,
+                        itemKey: key,
+                        propertyName: "checked",
+                        elementName: elementId,
+                        propertyValue: true,
+                    },
+                    context,
+                );
             }
         }
     }
 
-    private async setElementItems(where: string | undefined,
+    private async setElementItems(
+        where: string | undefined,
         searchField: SearchField,
         searchFields: SearchField[],
-        layer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.SubtypeSublayer,
+        layer:
+            | __esri.FeatureLayer
+            | __esri.SubtypeGroupLayer
+            | __esri.SubtypeSublayer,
         form: DisplayFormOutputs,
         fullQuery: boolean,
-        context: IActivityContext): Promise<Lookup<defs.Item>> {
-
+        context: IActivityContext,
+    ): Promise<Lookup<defs.Item>> {
         const getItemsFromColl = new GetFormElementItemsFromCollection();
         const getItemsFromFeatures = new GetFormElementItemsFromFeatures();
-        const results = await this.queryValues(where, searchField, searchFields, form, layer, true, fullQuery);
-        const featureLayerInfo = layer.type === "subtype-sublayer" ? layer.parent : layer;
-        const codedValues = featureLayerInfo ? GetLayerCodedValues.getCodedValues(
-            featureLayerInfo,
-            searchField.field) : undefined;
+        const results = await this.queryValues(
+            where,
+            searchField,
+            searchFields,
+            form,
+            layer,
+            true,
+            fullQuery,
+        );
+        const featureLayerInfo =
+            layer.type === "subtype-sublayer" ? layer.parent : layer;
+        const codedValues = featureLayerInfo
+            ? GetLayerCodedValues.getCodedValues(
+                  featureLayerInfo,
+                  searchField.field,
+              )
+            : undefined;
         let items;
 
         if (codedValues) {
-            const collItems = getItemsFromColl.execute({
-                collection: codedValues.filter((x) => {
-                    return results.features.some(y => y.attributes[searchField.field] === x.code)
-                }),
-                labelFieldName: "name", valueFieldName: "code"
-            }, context);
+            const collItems = getItemsFromColl.execute(
+                {
+                    collection: codedValues.filter((x) => {
+                        return results.features.some(
+                            (y) => y.attributes[searchField.field] === x.code,
+                        );
+                    }),
+                    labelFieldName: "name",
+                    valueFieldName: "code",
+                },
+                context,
+            );
             items = collItems.items;
         } else {
-            const values = getItemsFromFeatures.execute({ features: results.features, labelFieldName: searchField.field, valueFieldName: searchField.field });
+            const values = getItemsFromFeatures.execute({
+                features: results.features,
+                labelFieldName: searchField.field,
+                valueFieldName: searchField.field,
+            });
             items = values.items;
         }
         return items;
     }
 
-    private async setFormItemEvent(form: DisplayFormOutputs, searchField: SearchField, context: IActivityContext) {
+    private async setFormItemEvent(
+        form: DisplayFormOutputs,
+        searchField: SearchField,
+        context: IActivityContext,
+    ) {
         const setEvent = new SetFormElementEvent();
         if (searchField.events) {
             for (const [key, eventName] of Object.entries(searchField.events)) {
@@ -257,18 +365,23 @@ export default class AddQueryElements implements IActivityHandler {
                     await setEvent.execute(
                         {
                             eventName: key,
-                            displayFormId: context.ambient.activityContexts["$$form"].activity.name,
+                            displayFormId:
+                                context.ambient.activityContexts["$$form"]
+                                    .activity.name,
                             form: form,
                             targetActivityId: eventName,
-                            elementName: searchField.field
+                            elementName: searchField.field,
                         },
-                        context);
+                        context,
+                    );
                 }
             }
         }
     }
 
-    private getFormElementValue(element: defs.Element): ElementValue | undefined | null {
+    private getFormElementValue(
+        element: defs.Element,
+    ): ElementValue | undefined | null {
         if (element.value === undefined) {
             return undefined;
         }
@@ -297,13 +410,17 @@ export default class AddQueryElements implements IActivityHandler {
         searchField: SearchField,
         searchFields: SearchField[],
         form: DisplayFormOutputs,
-        layer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.SubtypeSublayer,
+        layer:
+            | __esri.FeatureLayer
+            | __esri.SubtypeGroupLayer
+            | __esri.SubtypeSublayer,
         distinct: boolean,
-        fullQuery: boolean): Promise<__esri.FeatureSet> {
+        fullQuery: boolean,
+    ): Promise<__esri.FeatureSet> {
         const simpleWhere = where && where.length > 0 ? where : "1=1";
         const genWhereClause = new GenerateWhereClause();
-        let subtypeField: string | undefined= undefined;
-        if(layer.type === "subtype-sublayer") {
+        let subtypeField: string | undefined = undefined;
+        if (layer.type === "subtype-sublayer") {
             subtypeField = layer.parent.subtypeField;
         } else {
             subtypeField = layer.subtypeField;
@@ -314,12 +431,35 @@ export default class AddQueryElements implements IActivityHandler {
         }
         const definitionExpression = this.getDefinitionExpression(layer);
 
-        const whereClause = fullQuery ? genWhereClause.execute({ layer: layer, queryFields: searchFields, targetForm: form }) : { result: definitionExpression ? definitionExpression : simpleWhere };
+        const whereClause = fullQuery
+            ? genWhereClause.execute({
+                  layer: layer,
+                  queryFields: searchFields,
+                  targetForm: form,
+              })
+            : {
+                  result: definitionExpression
+                      ? definitionExpression
+                      : simpleWhere,
+              };
 
-        return await this.queryLayer(layer, whereClause.result as string, distinct, outFields);
+        return await this.queryLayer(
+            layer,
+            whereClause.result as string,
+            distinct,
+            outFields,
+        );
     }
 
-    async queryLayer(layer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.SubtypeSublayer, where: string, distinct: boolean, outFields: string[]): Promise<__esri.FeatureSet> {
+    async queryLayer(
+        layer:
+            | __esri.FeatureLayer
+            | __esri.SubtypeGroupLayer
+            | __esri.SubtypeSublayer,
+        where: string,
+        distinct: boolean,
+        outFields: string[],
+    ): Promise<__esri.FeatureSet> {
         let layerToQuery;
         if (layer.type === "subtype-sublayer" && layer.parent) {
             layerToQuery = layer.parent;
@@ -335,13 +475,18 @@ export default class AddQueryElements implements IActivityHandler {
 
         return await layerToQuery.queryFeatures(query);
     }
-    private getDefinitionExpression(layer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.SubtypeSublayer): string | undefined {
+    private getDefinitionExpression(
+        layer:
+            | __esri.FeatureLayer
+            | __esri.SubtypeGroupLayer
+            | __esri.SubtypeSublayer,
+    ): string | undefined {
         let expression;
         switch (layer.type) {
             case "subtype-sublayer":
-                expression = layer.parent.definitionExpression ?
-                    `${layer.parent.definitionExpression} AND ${layer.parent.subtypeField} = ${layer.subtypeCode}` :
-                    `${layer.parent.subtypeField} = ${layer.subtypeCode}`;
+                expression = layer.parent.definitionExpression
+                    ? `${layer.parent.definitionExpression} AND ${layer.parent.subtypeField} = ${layer.subtypeCode}`
+                    : `${layer.parent.subtypeField} = ${layer.subtypeCode}`;
                 break;
             case "subtype-group":
             case "feature":
@@ -350,11 +495,12 @@ export default class AddQueryElements implements IActivityHandler {
         }
 
         return expression;
-
     }
 
-    private getItemKey(inItem: defs.Item, items: Lookup<defs.Item>): string | undefined {
-
+    private getItemKey(
+        inItem: defs.Item,
+        items: Lookup<defs.Item>,
+    ): string | undefined {
         for (const itemKey in items) {
             const item = items[itemKey];
             if (inItem.value === item.value) {

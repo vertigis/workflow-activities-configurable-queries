@@ -1,60 +1,59 @@
 [
     {
-      "layerId": "Water Main",
-      "formTitle": "Find Water Main",
-      "formDescription": "Search for Water Mains by Type, Status and Installation Date",
-      "searchFields": [
-        {
-          "field": "ASSETTYPE",
-          "title": "Asset Type",          
-          "operator": "=",
-          "type": "ItemPicker",
-          "cascade": false
-
-        },
-        {
-          "field": "lifecyclestatus",
-          "title": "lifecyclestatus",          
-          "operator": "=",
-          "type": "DropDownList",
-          "cascade": true,
-          "events": {
-            "populate": "populateEvent"
-          }
-        },
-        {
-          "field": "installdate",
-          "title": "Install Date",
-          "operator": "=",
-          "type": "DatePicker",
-          "cascade": false,
-          "events": {
-            "changed": "changedEvent"
-          }
-        },
-        {
-          "field": "assetid",
-          "title": "Asset Id",
-          "operator": "=",
-          "type": "DropDownList",
-          "cascade": true,
-          "events": {
-            "populate": "populateEvent"
-          }
-        }
-      ]
+        "layerId": "Water Main",
+        "formTitle": "Find Water Main",
+        "formDescription": "Search for Water Mains by Type, Status and Installation Date",
+        "searchFields": [
+            {
+                "field": "ASSETTYPE",
+                "title": "Asset Type",
+                "operator": "=",
+                "type": "ItemPicker",
+                "cascade": false
+            },
+            {
+                "field": "lifecyclestatus",
+                "title": "lifecyclestatus",
+                "operator": "=",
+                "type": "DropDownList",
+                "cascade": true,
+                "events": {
+                    "populate": "populateEvent"
+                }
+            },
+            {
+                "field": "installdate",
+                "title": "Install Date",
+                "operator": "=",
+                "type": "DatePicker",
+                "cascade": false,
+                "events": {
+                    "changed": "changedEvent"
+                }
+            },
+            {
+                "field": "assetid",
+                "title": "Asset Id",
+                "operator": "=",
+                "type": "DropDownList",
+                "cascade": true,
+                "events": {
+                    "populate": "populateEvent"
+                }
+            }
+        ]
     },
     {
-      "layerId": "Pressure Valve",
-      "searchTitle": "Find Pressure Valve by Diameter",
-      "searchFields": [
-        {
-          "field": "diameter",
-          "title": "Diameter",
-          "type": "DropDownList",
-          "operator": "=",
-          "cascade": false
-        }
-      ]
+        "layerId": "Pressure Valve",
+        "searchTitle": "Find Pressure Valve by Diameter",
+        "searchFields": [
+            {
+                "field": "diameter",
+                "title": "Diameter",
+                "type": "DropDownList",
+                "operator": "=",
+                "cascade": false
+            }
+        ]
     }
-  ]
+]

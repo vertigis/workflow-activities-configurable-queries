@@ -7,7 +7,7 @@ import {
     isGeometryRef,
     isItemsRef,
     isNumberRef,
-    isScanRef
+    isScanRef,
 } from "@vertigis/workflow/forms/utils";
 import { defs } from "@vertigis/workflow/forms/FormHost";
 import { EsriFieldType, SearchField as QueryField } from "./interfaces";
@@ -17,7 +17,10 @@ export interface GenerateWhereClauseInputs {
      * @description The target Layer to apply the clause.
      * @required
      */
-    layer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.SubtypeSublayer;
+    layer:
+        | __esri.FeatureLayer
+        | __esri.SubtypeGroupLayer
+        | __esri.SubtypeSublayer;
     /**
      * @description The form used to collect the query inputs.
      * @required
@@ -29,8 +32,8 @@ export interface GenerateWhereClauseInputs {
      */
     queryFields: QueryField[];
     /**
-    * @description An existing where clause (optional).  The dynamic query clause will be appended.
-    */
+     * @description An existing where clause (optional).  The dynamic query clause will be appended.
+     */
     whereClause?: string;
 }
 
@@ -41,7 +44,6 @@ export interface GenerateWhereClauseOutputs {
     result: string | undefined;
 }
 
-
 /**
  * @category Configurable Queries
  * @description Creates a where clause from a query form.
@@ -49,9 +51,8 @@ export interface GenerateWhereClauseOutputs {
  * @supportedApps EXB, GWV
  **/
 export default class GenerateWhereClause implements IActivityHandler {
-
     execute(inputs: GenerateWhereClauseInputs): GenerateWhereClauseOutputs {
-        const { layer, targetForm, whereClause, queryFields } = inputs
+        const { layer, targetForm, whereClause, queryFields } = inputs;
         if (!layer) {
             throw new Error("layer is required");
         }
@@ -78,33 +79,44 @@ export default class GenerateWhereClause implements IActivityHandler {
         };
     }
 
-    private setSQLValues(targetForm: DisplayFormOutputs,
+    private setSQLValues(
+        targetForm: DisplayFormOutputs,
         where: string,
         fields: __esri.Field[],
-        searchFields: QueryField[]): string | undefined {
-
+        searchFields: QueryField[],
+    ): string | undefined {
         for (const key of Object.keys(targetForm.state)) {
             const formElement = targetForm.state[key];
-            const field = fields.find(x => x.name === key);
+            const field = fields.find((x) => x.name === key);
             if (field) {
-                const searchField = searchFields.find(x => x.field == key);
+                const searchField = searchFields.find((x) => x.field == key);
                 if (searchField) {
-                    const value = this.setQueryValue(formElement, searchField, field);
+                    const value = this.setQueryValue(
+                        formElement,
+                        searchField,
+                        field,
+                    );
                     if (value) {
                         where = this.appendToWhere(where, searchField, value);
                     }
                 }
             }
-
         }
         return where;
     }
 
-    private setQueryValue(formElement: defs.Element, queryField: QueryField, field: __esri.Field): string | undefined {
+    private setQueryValue(
+        formElement: defs.Element,
+        queryField: QueryField,
+        field: __esri.Field,
+    ): string | undefined {
         const hasValue = formElement.value || formElement.value === 0;
 
         if (hasValue) {
-            const currentValue = formElement.type === "CheckBox" ? Number(formElement.checked) as defs.Value : formElement.value as defs.Value;
+            const currentValue =
+                formElement.type === "CheckBox"
+                    ? (Number(formElement.checked) as defs.Value)
+                    : (formElement.value as defs.Value);
             if (isDateRangeRef(currentValue)) {
                 return this.formatDateRange(currentValue);
             } else if (isDateTimeRef(currentValue)) {
@@ -115,26 +127,41 @@ export default class GenerateWhereClause implements IActivityHandler {
                 return this.formatItems(currentValue, field);
             } else if (isNumberRef(currentValue)) {
                 return currentValue.numeric.toString();
-            } else if (isGeometryRef(currentValue) || isFilesRef(currentValue) || isScanRef(currentValue)) {
-                throw new Error(`Unsupported form element value: ${queryField.field}: ${(currentValue as any).type}`);
+            } else if (
+                isGeometryRef(currentValue) ||
+                isFilesRef(currentValue) ||
+                isScanRef(currentValue)
+            ) {
+                throw new Error(
+                    `Unsupported form element value: ${queryField.field}: ${
+                        (currentValue as any).type
+                    }`,
+                );
             }
             return this.formatValue(currentValue, queryField, field);
         }
         return undefined;
-
     }
 
-    private appendToWhere(where: string, queryFields: QueryField, inValue: string) {
+    private appendToWhere(
+        where: string,
+        queryFields: QueryField,
+        inValue: string,
+    ) {
         let fieldAndValue = "";
         let value = inValue;
         if (queryFields.operator === "IN") {
-            value = `(${value})`
+            value = `(${value})`;
         }
         fieldAndValue = ` AND ${queryFields.field} ${queryFields.operator} ${value}`;
 
-        return `${where}${fieldAndValue}`
+        return `${where}${fieldAndValue}`;
     }
-    private formatValue(value: defs.Value, searchField: QueryField, field: __esri.Field): string | undefined {
+    private formatValue(
+        value: defs.Value,
+        searchField: QueryField,
+        field: __esri.Field,
+    ): string | undefined {
         let formattedValue;
         switch (field.type) {
             case EsriFieldType.Guid:
@@ -153,16 +180,18 @@ export default class GenerateWhereClause implements IActivityHandler {
         return formattedValue;
     }
 
-
-
-
-    private getDefinitionExpression(layer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.SubtypeSublayer): string | undefined {
+    private getDefinitionExpression(
+        layer:
+            | __esri.FeatureLayer
+            | __esri.SubtypeGroupLayer
+            | __esri.SubtypeSublayer,
+    ): string | undefined {
         let expression;
         switch (layer.type) {
             case "subtype-sublayer":
-                expression = layer.parent.definitionExpression ?
-                    `${layer.parent.definitionExpression} AND ${layer.parent.subtypeField} = ${layer.subtypeCode}` :
-                    `${layer.parent.subtypeField} = ${layer.subtypeCode}`;
+                expression = layer.parent.definitionExpression
+                    ? `${layer.parent.definitionExpression} AND ${layer.parent.subtypeField} = ${layer.subtypeCode}`
+                    : `${layer.parent.subtypeField} = ${layer.subtypeCode}`;
                 break;
             case "subtype-group":
             case "feature":
@@ -171,39 +200,46 @@ export default class GenerateWhereClause implements IActivityHandler {
         }
 
         return expression;
-
     }
 
-
     private formatDateRange(value: defs.Value): string | undefined {
-
         if (isDateRangeRef(value)) {
             const values = [value.startDate, value.endDate];
-            return `DATE '${values[0].toISOString().split('T')[0]}' AND DATE '${values[1].toISOString().split('T')[0]}'`;
+            return `DATE '${values[0].toISOString().split("T")[0]}' AND DATE '${
+                values[1].toISOString().split("T")[0]
+            }'`;
         }
         return undefined;
     }
 
     private formatDate(value: defs.Value): string | undefined {
-
         if (isDateTimeRef(value)) {
-            return `TIMESTAMP '${new Date(value.value).toISOString().slice(0, 19).replace('T', ' ')}'`;
+            return `TIMESTAMP '${new Date(value.value)
+                .toISOString()
+                .slice(0, 19)
+                .replace("T", " ")}'`;
         }
         return undefined;
     }
 
-
-    private formatItems(value: defs.Value, field: __esri.Field): string | undefined {
+    private formatItems(
+        value: defs.Value,
+        field: __esri.Field,
+    ): string | undefined {
         let formattedValue;
         if (isItemsRef(value)) {
             switch (field.type) {
                 case "guid":
                 case "global-id":
                 case "string":
-                    formattedValue = value.items.map(x => `'${x.value as any}'`).join(",");
+                    formattedValue = value.items
+                        .map((x) => `'${x.value as any}'`)
+                        .join(",");
                     break;
                 default:
-                    formattedValue = value.items.map(x => `${x.value as any}`).join(",");
+                    formattedValue = value.items
+                        .map((x) => `${x.value as any}`)
+                        .join(",");
                     break;
             }
         }
