@@ -1,0 +1,4601 @@
+{
+  "components": [
+    {
+      "id": 2,
+      "steps": [
+        {
+          "id": 3,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Start",
+          "transitions": [
+            {
+              "id": 877,
+              "inputs": {},
+              "position": "90,60 90,130",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 804
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Subworkflow",
+          "id": 259,
+          "inputs": {
+            "subworkflow": {
+              "accessors": [
+                "$$subworkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 13,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$subworkflow",
+              "source": "$$subworkflow"
+            }
+          },
+          "name": "generateQueryFields",
+          "position": "310,520",
+          "title": "Query Fields"
+        },
+        {
+          "action": "gcx:wf:core::Container",
+          "description": "Initialize variables",
+          "id": 804,
+          "inputs": {},
+          "position": "-30,130",
+          "title": "Setup",
+          "transitions": [
+            {
+              "id": 858,
+              "inputs": {},
+              "position": "90,250 90,310",
+              "target": {
+                "id": 806
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Container",
+          "description": "Get the target layer",
+          "id": 806,
+          "inputs": {},
+          "position": "-30,310",
+          "title": "Find Layer",
+          "transitions": [
+            {
+              "id": 874,
+              "inputs": {},
+              "position": "90,430 90,520",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 830
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Exit",
+          "id": 808,
+          "inputs": {},
+          "position": "350,1270",
+          "title": "Exit"
+        },
+        {
+          "action": "gcx:wf:core::Subworkflow",
+          "id": 810,
+          "inputs": {
+            "subworkflow": {
+              "accessors": [
+                "$$subworkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 13,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$subworkflow",
+              "source": "$$subworkflow"
+            }
+          },
+          "name": "changedEvent",
+          "position": "600,520",
+          "title": "Changed"
+        },
+        {
+          "action": "gcx:wf:core::SetWorkflowOutput",
+          "id": 812,
+          "inputs": {
+            "name": "action",
+            "value": {
+              "accessors": [
+                "$queryForm"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$queryForm.result",
+              "source": "$queryForm.result"
+            }
+          },
+          "position": "-310,770",
+          "title": "Set Workflow Output",
+          "transitions": [
+            {
+              "id": 860,
+              "inputs": {},
+              "position": "-190,800 -190,900",
+              "target": {
+                "id": 814
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Exit",
+          "id": 814,
+          "inputs": {},
+          "position": "-280,900",
+          "title": "Exit"
+        },
+        {
+          "action": "gcx:wf:core::SetWorkflowOutput",
+          "id": 816,
+          "inputs": {
+            "name": "action",
+            "value": {
+              "accessors": [
+                "$queryForm"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$queryForm.result",
+              "source": "$queryForm.result"
+            }
+          },
+          "position": "320,1160",
+          "title": "Set Workflow Output",
+          "transitions": [
+            {
+              "id": 862,
+              "inputs": {},
+              "position": "440,1190 440,1270",
+              "target": {
+                "id": 808
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Subworkflow",
+          "id": 818,
+          "inputs": {
+            "subworkflow": {
+              "accessors": [
+                "$$subworkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 13,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$subworkflow",
+              "source": "$$subworkflow"
+            }
+          },
+          "name": "clickedEvent",
+          "position": "300,310",
+          "title": "Clicked"
+        },
+        {
+          "action": "gcx:wf:core::Subworkflow",
+          "id": 822,
+          "inputs": {
+            "subworkflow": {
+              "accessors": [
+                "$$subworkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 13,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$subworkflow",
+              "source": "$$subworkflow"
+            }
+          },
+          "name": "validateEvent",
+          "position": "600,310",
+          "title": "Validate"
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 824,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$queryForm"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$queryForm.result == \"cancel\"",
+              "source": "$queryForm.result == \"cancel\""
+            }
+          },
+          "position": "30,700",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 864,
+              "inputs": {},
+              "position": "30,730 -190,730 -190,770",
+              "target": {
+                "id": 812
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "false",
+              "id": 866,
+              "inputs": {},
+              "position": "150,730 230,730 230,1020",
+              "sourceConnector": "right",
+              "target": {
+                "id": 826
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 826,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$queryForm"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$queryForm.result != \"back\"",
+              "source": "$queryForm.result != \"back\""
+            }
+          },
+          "position": "170,1020",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 868,
+              "inputs": {},
+              "position": "290,1050 440,1050 440,1160",
+              "sourceConnector": "right",
+              "target": {
+                "id": 816
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "true",
+              "id": 870,
+              "inputs": {},
+              "position": "170,1050 -70,1045",
+              "target": {
+                "id": 828
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Container",
+          "id": 828,
+          "inputs": {},
+          "position": "-310,1000",
+          "title": "Run Query",
+          "transitions": [
+            {
+              "id": 876,
+              "inputs": {},
+              "position": "-310,1045 -330,1045 -330,580 -30,580",
+              "sourceConnector": "left",
+              "target": {
+                "id": 830
+              },
+              "targetConnector": "left"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms:form:DisplayForm",
+          "id": 830,
+          "inputs": {
+            "form": {
+              "accessors": [],
+              "code": "resources.forms[values.id]",
+              "values": {
+                "id": 802
+              }
+            },
+            "reset": false
+          },
+          "name": "queryForm",
+          "position": "-30,520",
+          "title": "Display Form",
+          "transitions": [
+            {
+              "id": 872,
+              "inputs": {},
+              "position": "90,640 90,700",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 824
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Subworkflow",
+          "id": 832,
+          "inputs": {
+            "subworkflow": {
+              "accessors": [
+                "$$subworkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 13,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$subworkflow",
+              "source": "$$subworkflow"
+            }
+          },
+          "name": "populateEvent",
+          "position": "300,130",
+          "title": "Populate"
+        },
+        {
+          "action": "gcx:wf:core::Subworkflow",
+          "id": 834,
+          "inputs": {
+            "subworkflow": {
+              "accessors": [
+                "$$subworkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 13,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$subworkflow",
+              "source": "$$subworkflow"
+            }
+          },
+          "name": "suggestEvent",
+          "position": "600,130",
+          "title": "Suggest"
+        }
+      ]
+    },
+    {
+      "id": 243,
+      "steps": [
+        {
+          "id": 245,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Subworkflow",
+          "transitions": [
+            {
+              "id": 263,
+              "inputs": {},
+              "position": "90,60 90,110",
+              "target": {
+                "id": 262
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 247,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 2,
+                  "kind": "idref"
+                }
+              ],
+              "code": "!!$layer.result.subtypeField",
+              "source": "!!$layer.result.subtypeField"
+            }
+          },
+          "position": "30,350",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 257,
+              "inputs": {},
+              "position": "30,380 -130,380 -130,500",
+              "sourceConnector": "left",
+              "target": {
+                "id": 268
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "false",
+              "id": 272,
+              "inputs": {},
+              "position": "150,380 240,380 240,460",
+              "sourceConnector": "right",
+              "target": {
+                "id": 271
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 262,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$generateQueryFields"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$generateQueryFields.arguments[\"field\"]",
+              "source": "$generateQueryFields.arguments[\"field\"]"
+            }
+          },
+          "name": "targetField",
+          "position": "-30,110",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 266,
+              "inputs": {},
+              "position": "90,180 90,230",
+              "target": {
+                "id": 265
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 265,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$targetField"
+              ],
+              "annotations": [
+                {
+                  "count": 12,
+                  "index": 1,
+                  "kind": "idref"
+                }
+              ],
+              "code": "[$targetField.result]",
+              "source": "[$targetField.result]"
+            }
+          },
+          "name": "fieldsArray",
+          "position": "-30,230",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 267,
+              "inputs": {},
+              "position": "90,300 90,350",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 247
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::AddItem",
+          "id": 268,
+          "inputs": {
+            "collection": {
+              "accessors": [
+                "$fieldsArray"
+              ],
+              "annotations": [
+                {
+                  "count": 12,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$fieldsArray.result",
+              "source": "$fieldsArray.result"
+            },
+            "item": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer.result.subtypeField",
+              "source": "$layer.result.subtypeField"
+            }
+          },
+          "position": "-250,500",
+          "title": "Add Item",
+          "transitions": [
+            {
+              "id": 278,
+              "inputs": {},
+              "position": "-130,530 -130,730 140,730 140,750",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 277
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 271,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$layer",
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 2,
+                  "kind": "idref"
+                },
+                {
+                  "count": 6,
+                  "index": 28,
+                  "kind": "idref"
+                }
+              ],
+              "code": "!!$layer.result.parent && !!$layer.result.parent.subtypeField",
+              "source": "!!$layer.result.parent && !!$layer.result.parent.subtypeField"
+            }
+          },
+          "position": "180,460",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 276,
+              "inputs": {},
+              "position": "180,490 140,490 140,600",
+              "sourceConnector": "left",
+              "target": {
+                "id": 275
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "false",
+              "id": 280,
+              "inputs": {},
+              "position": "300,490 320,490 320,730 140,730 140,750",
+              "sourceConnector": "right",
+              "target": {
+                "id": 277
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::AddItem",
+          "id": 275,
+          "inputs": {
+            "collection": {
+              "accessors": [
+                "$fieldsArray"
+              ],
+              "annotations": [
+                {
+                  "count": 12,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$fieldsArray.result",
+              "source": "$fieldsArray.result"
+            },
+            "item": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer.result.parent.subtypeField",
+              "source": "$layer.result.parent.subtypeField"
+            }
+          },
+          "position": "20,600",
+          "title": "Add Item",
+          "transitions": [
+            {
+              "id": 279,
+              "inputs": {},
+              "position": "140,630 140,750",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 277
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Evaluate",
+          "id": 277,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$generateQueryFields",
+                "$fieldsArray"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 12,
+                  "index": 40,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$generateQueryFields.setResult({ fields: $fieldsArray.result })",
+              "source": "$generateQueryFields.setResult({fields: $fieldsArray.result})"
+            }
+          },
+          "name": "setFieldsOutput",
+          "position": "20,750",
+          "title": "Evaluate Expression"
+        }
+      ]
+    },
+    {
+      "id": 409,
+      "steps": [
+        {
+          "action": "gcx:wf:core:subworkflow:RunSubworkflow",
+          "id": 286,
+          "inputs": {
+            "arguments": {
+              "accessors": [
+                "$suggestSearchField"
+              ],
+              "annotations": [
+                {
+                  "count": 19,
+                  "index": 8,
+                  "kind": "idref"
+                }
+              ],
+              "code": "{ field: $suggestSearchField.result.field }",
+              "source": "{field: $suggestSearchField.result.field}"
+            },
+            "subworkflowId": {
+              "accessors": [
+                "activities"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "activities.generateQueryFields",
+              "source": "activities.generateQueryFields"
+            }
+          },
+          "name": "suggestFields",
+          "position": "-40,670",
+          "title": "Run Subworkflow",
+          "transitions": [
+            {
+              "id": 287,
+              "inputs": {},
+              "position": "80,740 80,790",
+              "target": {
+                "id": 308
+              }
+            }
+          ]
+        },
+        {
+          "action": "uuid:fc5de4bd-b399-4353-82ea-cbf393a350b3::GetLayerCodedValues",
+          "id": 308,
+          "inputs": {
+            "field": {
+              "accessors": [
+                "$suggestSearchField"
+              ],
+              "annotations": [
+                {
+                  "count": 19,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestSearchField.result.field",
+              "source": "$suggestSearchField.result.field"
+            },
+            "layer": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer.result",
+              "source": "$layer.result"
+            }
+          },
+          "name": "suggestCodedValues",
+          "position": "-40,790",
+          "title": "Get Layer Coded Values",
+          "transitions": [
+            {
+              "id": 312,
+              "inputs": {},
+              "position": "80,860 80,1100",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 413
+              }
+            }
+          ]
+        },
+        {
+          "action": "uuid:fc5de4bd-b399-4353-82ea-cbf393a350b3::GenerateWhereClause",
+          "id": 310,
+          "inputs": {
+            "layer": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer.result",
+              "source": "$layer.result"
+            },
+            "queryFields": {
+              "accessors": [
+                "$selectedQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$selectedQuery.result.searchFields",
+              "source": "$selectedQuery.result.searchFields"
+            },
+            "targetForm": {
+              "accessors": [
+                "$queryForm"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$queryForm",
+              "source": "$queryForm"
+            }
+          },
+          "name": "suggestWhereClause",
+          "position": "-40,360",
+          "title": "Generate Where Clause",
+          "transitions": [
+            {
+              "id": 311,
+              "inputs": {},
+              "position": "80,430 80,490",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 421
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 413,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$suggestCodedValues",
+                "$suggestCodedValues"
+              ],
+              "annotations": [
+                {
+                  "count": 19,
+                  "index": 2,
+                  "kind": "idref"
+                },
+                {
+                  "count": 19,
+                  "index": 31,
+                  "kind": "idref"
+                }
+              ],
+              "code": "!!$suggestCodedValues.result && $suggestCodedValues.result.length > 0",
+              "source": "!!$suggestCodedValues.result &&$suggestCodedValues.result.length > 0"
+            }
+          },
+          "position": "20,1100",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 447,
+              "inputs": {},
+              "position": "20,1130 -100,1130 -100,1230",
+              "sourceConnector": "left",
+              "target": {
+                "id": 415
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "false",
+              "id": 449,
+              "inputs": {},
+              "position": "140,1130 240,1130 240,1520",
+              "sourceConnector": "right",
+              "target": {
+                "id": 417
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 415,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$suggestCodedValues",
+                "$textReplace1"
+              ],
+              "annotations": [
+                {
+                  "count": 19,
+                  "index": 15,
+                  "kind": "idref"
+                },
+                {
+                  "count": 13,
+                  "index": 97,
+                  "kind": "idref"
+                }
+              ],
+              "code": "(function () {\n    return $suggestCodedValues.result.filter(function (x) {\n        return x.name.toUpperCase().includes($textReplace1.result.toUpperCase());\n    });\n})()",
+              "source": "(()=> {\nreturn $suggestCodedValues.result.filter((x)=> { \n  return x.name.toUpperCase().includes($textReplace1.result.toUpperCase()\n)})\n\n })()"
+            }
+          },
+          "name": "filteredSuggestCodes",
+          "position": "-220,1230",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 455,
+              "inputs": {},
+              "position": "-100,1300 -100,1380",
+              "target": {
+                "id": 425
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Evaluate",
+          "id": 417,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$suggestWhereClause",
+                "$suggestWhereClause",
+                "$suggestWhereClause",
+                "$suggestWhereClause",
+                "$suggestSearchField",
+                "$textReplace1",
+                "$suggestSearchField",
+                "$textReplace1"
+              ],
+              "annotations": [
+                {
+                  "count": 19,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 19,
+                  "index": 31,
+                  "kind": "idref"
+                },
+                {
+                  "count": 19,
+                  "index": 61,
+                  "kind": "idref"
+                },
+                {
+                  "count": 19,
+                  "index": 104,
+                  "kind": "idref"
+                },
+                {
+                  "count": 19,
+                  "index": 144,
+                  "kind": "idref"
+                },
+                {
+                  "count": 13,
+                  "index": 193,
+                  "kind": "idref"
+                },
+                {
+                  "count": 19,
+                  "index": 230,
+                  "kind": "idref"
+                },
+                {
+                  "count": 13,
+                  "index": 279,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestWhereClause.result = !!$suggestWhereClause.result && $suggestWhereClause.result.length > 0 ? \"\".concat($suggestWhereClause.result, \" AND UPPER(\").concat($suggestSearchField.result.field, \") LIKE UPPER('\").concat($textReplace1.result, \"%')\") : \"UPPER(\".concat($suggestSearchField.result.field, \") LIKE UPPER('\").concat($textReplace1.result, \"%')\")",
+              "source": "$suggestWhereClause.result = !!$suggestWhereClause.result && $suggestWhereClause.result.length > 0 ? `${$suggestWhereClause.result} AND UPPER(${$suggestSearchField.result.field}) LIKE UPPER('${$textReplace1.result}%')` : `UPPER(${$suggestSearchField.result.field}) LIKE UPPER('${$textReplace1.result}%')`"
+            }
+          },
+          "name": "updatedSuggestWhereClause",
+          "position": "120,1520",
+          "title": "Evaluate Expression",
+          "transitions": [
+            {
+              "id": 457,
+              "inputs": {},
+              "position": "240,1590 240,1650",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 427
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::TextReplace",
+          "description": "Escape apostrophe characters to avoid SQL injection and broken queries.",
+          "id": 421,
+          "inputs": {
+            "newValue": "''",
+            "oldValue": "'",
+            "text": {
+              "accessors": [
+                "$suggestEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestEventData.argument",
+              "source": "$suggestEventData.argument"
+            }
+          },
+          "name": "textReplace1",
+          "position": "-40,490",
+          "title": "Text Replace",
+          "transitions": [
+            {
+              "id": 291,
+              "inputs": {},
+              "position": "80,620 80,670",
+              "target": {
+                "id": 286
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 425,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$filteredSuggestCodes"
+              ],
+              "annotations": [
+                {
+                  "count": 21,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$filteredSuggestCodes.result.length > 0",
+              "source": "$filteredSuggestCodes.result.length > 0"
+            }
+          },
+          "position": "-160,1380",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 459,
+              "inputs": {},
+              "position": "-160,1410 -250,1410 -250,1520",
+              "sourceConnector": "left",
+              "target": {
+                "id": 429
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis:query:QueryTask",
+          "description": "Query for features.",
+          "id": 427,
+          "inputs": {
+            "outFields": {
+              "accessors": [
+                "$suggestSearchField"
+              ],
+              "annotations": [
+                {
+                  "count": 19,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestSearchField.result.field",
+              "source": "$suggestSearchField.result.field"
+            },
+            "returnDistinctValues": true,
+            "returnGeometry": false,
+            "url": {
+              "accessors": [
+                "$layerUrl"
+              ],
+              "annotations": [
+                {
+                  "count": 9,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layerUrl.result",
+              "source": "$layerUrl.result"
+            },
+            "where": {
+              "accessors": [
+                "$suggestWhereClause"
+              ],
+              "annotations": [
+                {
+                  "count": 19,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestWhereClause.result",
+              "source": "$suggestWhereClause.result"
+            }
+          },
+          "name": "suggestFeatureQuery",
+          "position": "120,1650",
+          "title": "Query Layer",
+          "transitions": [
+            {
+              "id": 465,
+              "inputs": {},
+              "position": "240,1740 240,1790",
+              "target": {
+                "id": 433
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::GetFormElementItemsFromCollection",
+          "id": 429,
+          "inputs": {
+            "collection": {
+              "accessors": [
+                "$filteredSuggestCodes"
+              ],
+              "annotations": [
+                {
+                  "count": 21,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$filteredSuggestCodes.result",
+              "source": "$filteredSuggestCodes.result"
+            },
+            "labelFieldName": "name",
+            "valueFieldName": "code"
+          },
+          "name": "suggestCodedFormItems",
+          "position": "-370,1520",
+          "title": "Get Form Element Items From Collection",
+          "transitions": [
+            {
+              "id": 463,
+              "inputs": {},
+              "position": "-250,1590 -250,1670",
+              "target": {
+                "id": 431
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::SetFormElementItems",
+          "description": "",
+          "id": 431,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$suggestEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestEventData.elementId",
+              "source": "$suggestEventData.elementId"
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            },
+            "items": {
+              "accessors": [
+                "$suggestCodedFormItems"
+              ],
+              "annotations": [
+                {
+                  "count": 22,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestCodedFormItems.items",
+              "source": "$suggestCodedFormItems.items"
+            }
+          },
+          "position": "-370,1670",
+          "title": "Set Form Element Items"
+        },
+        {
+          "action": "gcx:wf:forms::GetFormElementItemsFromFeatures",
+          "description": "Convert the features into form element items to be used in the element.",
+          "id": 433,
+          "inputs": {
+            "features": {
+              "accessors": [
+                "$suggestFeatureQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestFeatureQuery.features",
+              "source": "$suggestFeatureQuery.features"
+            },
+            "labelFieldName": {
+              "accessors": [
+                "$suggestSearchField"
+              ],
+              "annotations": [
+                {
+                  "count": 19,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestSearchField.result.field",
+              "source": "$suggestSearchField.result.field"
+            },
+            "valueFieldName": {
+              "accessors": [
+                "$suggestSearchField"
+              ],
+              "annotations": [
+                {
+                  "count": 19,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestSearchField.result.field",
+              "source": "$suggestSearchField.result.field"
+            }
+          },
+          "name": "suggestFeatureFormItems",
+          "position": "120,1790",
+          "title": "Get Form Element Items From Features",
+          "transitions": [
+            {
+              "id": 469,
+              "inputs": {},
+              "position": "240,1920 240,1990",
+              "target": {
+                "id": 437
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Evaluate",
+          "id": 435,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$selectedQuery",
+                "$suggestEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 17,
+                  "index": 55,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$selectedQuery.result.searchFields.find(function (x) { return x.field === $suggestEventData.elementId; })",
+              "source": "$selectedQuery.result.searchFields.find(x=> x.field ===$suggestEventData.elementId)"
+            }
+          },
+          "name": "suggestSearchField",
+          "position": "-40,240",
+          "title": "Evaluate Expression",
+          "transitions": [
+            {
+              "id": 467,
+              "inputs": {},
+              "position": "80,310 80,360",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 310
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::SetFormElementItems",
+          "description": "",
+          "id": 437,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$suggestEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestEventData.elementId",
+              "source": "$suggestEventData.elementId"
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            },
+            "items": {
+              "accessors": [
+                "$suggestFeatureFormItems"
+              ],
+              "annotations": [
+                {
+                  "count": 24,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$suggestFeatureFormItems.items",
+              "source": "$suggestFeatureFormItems.items"
+            }
+          },
+          "position": "120,1990",
+          "title": "Set Form Element Items"
+        },
+        {
+          "action": "gcx:wf:forms::GetFormEventData",
+          "id": 441,
+          "inputs": {
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "name": "suggestEventData",
+          "position": "-40,120",
+          "title": "Get Form Event Data",
+          "transitions": [
+            {
+              "id": 475,
+              "inputs": {},
+              "position": "80,190 80,240",
+              "target": {
+                "id": 435
+              }
+            }
+          ]
+        },
+        {
+          "id": 443,
+          "inputs": {},
+          "position": "-10,0",
+          "purpose": "start",
+          "title": "Subworkflow",
+          "transitions": [
+            {
+              "id": 477,
+              "inputs": {},
+              "position": "80,60 80,120",
+              "target": {
+                "id": 441
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 479,
+      "steps": [
+        {
+          "action": "gcx:wf:core:subworkflow:RunSubworkflow",
+          "id": 281,
+          "inputs": {
+            "arguments": {
+              "accessors": [
+                "$populateSearchField"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 8,
+                  "kind": "idref"
+                }
+              ],
+              "code": "{ field: $populateSearchField.result.field }",
+              "source": "{field: $populateSearchField.result.field}"
+            },
+            "subworkflowId": {
+              "accessors": [
+                "activities"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "activities.generateQueryFields",
+              "source": "activities.generateQueryFields"
+            }
+          },
+          "name": "populateFields",
+          "position": "-20,450",
+          "title": "Run Subworkflow",
+          "transitions": [
+            {
+              "id": 283,
+              "inputs": {},
+              "position": "100,520 100,580",
+              "target": {
+                "id": 495
+              }
+            }
+          ]
+        },
+        {
+          "action": "uuid:fc5de4bd-b399-4353-82ea-cbf393a350b3::GetLayerCodedValues",
+          "id": 296,
+          "inputs": {
+            "field": {
+              "accessors": [
+                "$populateSearchField"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateSearchField.result.field",
+              "source": "$populateSearchField.result.field"
+            },
+            "layer": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer.result",
+              "source": "$layer.result"
+            },
+            "subTypeCode": {
+              "accessors": [
+                "$layer",
+                "$populateQuery",
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 14,
+                  "index": 29,
+                  "kind": "idref"
+                },
+                {
+                  "count": 6,
+                  "index": 63,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer.result.subtypeField ? $populateQuery.feature.attributes[$layer.result.subtypeField] : undefined",
+              "source": "$layer.result.subtypeField ? $populateQuery.feature.attributes[$layer.result.subtypeField] : undefined"
+            }
+          },
+          "name": "populateCodedValues",
+          "position": "-20,880",
+          "title": "Get Layer Coded Values",
+          "transitions": [
+            {
+              "id": 300,
+              "inputs": {},
+              "position": "100,950 100,1040",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 485
+              }
+            }
+          ]
+        },
+        {
+          "action": "uuid:fc5de4bd-b399-4353-82ea-cbf393a350b3::GenerateWhereClause",
+          "id": 299,
+          "inputs": {
+            "layer": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer.result",
+              "source": "$layer.result"
+            },
+            "queryFields": {
+              "accessors": [
+                "$selectedQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$selectedQuery.result.searchFields",
+              "source": "$selectedQuery.result.searchFields"
+            },
+            "targetForm": {
+              "accessors": [
+                "$queryForm"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$queryForm",
+              "source": "$queryForm"
+            }
+          },
+          "name": "populateWhereClause",
+          "position": "-20,330",
+          "title": "Generate Where Clause",
+          "transitions": [
+            {
+              "id": 313,
+              "inputs": {},
+              "position": "100,400 100,450",
+              "target": {
+                "id": 281
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 481,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$populateQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateQuery.features.length > 0",
+              "source": "$populateQuery.features.length > 0"
+            }
+          },
+          "position": "40,730",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 297,
+              "inputs": {},
+              "position": "40,760 20,760 20,860 100,860 100,880",
+              "sourceConnector": "left",
+              "target": {
+                "id": 296
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 485,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$populateCodedValues",
+                "$populateCodedValues"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 2,
+                  "kind": "idref"
+                },
+                {
+                  "count": 20,
+                  "index": 33,
+                  "kind": "idref"
+                }
+              ],
+              "code": "!!$populateCodedValues.result && $populateCodedValues.result.length > 0",
+              "source": "!!$populateCodedValues.result && $populateCodedValues.result.length > 0"
+            }
+          },
+          "position": "40,1040",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 522,
+              "inputs": {},
+              "position": "160,1070 360,1070 360,1170",
+              "sourceConnector": "right",
+              "target": {
+                "id": 487
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "true",
+              "id": 524,
+              "inputs": {},
+              "position": "40,1070 -170,1070 -170,1170",
+              "sourceConnector": "left",
+              "target": {
+                "id": 512
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis::SortFeatureSet",
+          "id": 487,
+          "inputs": {
+            "features": {
+              "accessors": [
+                "$populateQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateQuery.features",
+              "source": "$populateQuery.features"
+            },
+            "sortAttribute": {
+              "accessors": [
+                "$populateSearchField"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateSearchField.result.field",
+              "source": "$populateSearchField.result.field"
+            }
+          },
+          "name": "sortedPopulateFeatures",
+          "position": "240,1170",
+          "title": "Sort Feature Set",
+          "transitions": [
+            {
+              "id": 534,
+              "inputs": {},
+              "position": "360,1240 360,1290",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 499
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis:query:QueryTask",
+          "description": "Query for features.",
+          "id": 495,
+          "inputs": {
+            "outFields": {
+              "accessors": [
+                "$populateFields"
+              ],
+              "annotations": [
+                {
+                  "count": 15,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateFields.result.fields",
+              "source": "$populateFields.result.fields"
+            },
+            "returnDistinctValues": true,
+            "returnGeometry": false,
+            "url": {
+              "accessors": [
+                "$layerUrl"
+              ],
+              "annotations": [
+                {
+                  "count": 9,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layerUrl.result",
+              "source": "$layerUrl.result"
+            },
+            "where": {
+              "accessors": [
+                "$populateWhereClause",
+                "$populateWhereClause",
+                "$populateWhereClause"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 2,
+                  "kind": "idref"
+                },
+                {
+                  "count": 20,
+                  "index": 33,
+                  "kind": "idref"
+                },
+                {
+                  "count": 20,
+                  "index": 74,
+                  "kind": "idref"
+                }
+              ],
+              "code": "!!$populateWhereClause.result && $populateWhereClause.result.length > 0 ? $populateWhereClause.result : \"1=1\"",
+              "source": "!!$populateWhereClause.result && $populateWhereClause.result.length > 0 ? $populateWhereClause.result: `1=1`"
+            }
+          },
+          "name": "populateQuery",
+          "position": "-20,580",
+          "title": "Query Layer",
+          "transitions": [
+            {
+              "id": 298,
+              "inputs": {},
+              "position": "100,670 100,730",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 481
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Evaluate",
+          "id": 497,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$selectedQuery",
+                "$populateEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 18,
+                  "index": 55,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$selectedQuery.result.searchFields.find(function (x) { return x.field === $populateEventData.elementId; })",
+              "source": "$selectedQuery.result.searchFields.find(x=> x.field ===$populateEventData.elementId)"
+            }
+          },
+          "name": "populateSearchField",
+          "position": "-20,210",
+          "title": "Evaluate Expression",
+          "transitions": [
+            {
+              "id": 532,
+              "inputs": {},
+              "position": "100,280 100,330",
+              "target": {
+                "id": 299
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::GetFormElementItemsFromFeatures",
+          "description": "Convert the features into form element items to be used in the element.",
+          "id": 499,
+          "inputs": {
+            "features": {
+              "accessors": [
+                "$sortedPopulateFeatures"
+              ],
+              "annotations": [
+                {
+                  "count": 23,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$sortedPopulateFeatures.features",
+              "source": "$sortedPopulateFeatures.features"
+            },
+            "labelFieldName": {
+              "accessors": [
+                "$populateSearchField"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateSearchField.result.field",
+              "source": "$populateSearchField.result.field"
+            },
+            "valueFieldName": {
+              "accessors": [
+                "$populateSearchField"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateSearchField.result.field",
+              "source": "$populateSearchField.result.field"
+            }
+          },
+          "name": "populateFeatureFormItems",
+          "position": "240,1290",
+          "title": "Get Form Element Items From Features",
+          "transitions": [
+            {
+              "id": 536,
+              "inputs": {},
+              "position": "360,1420 360,1460",
+              "target": {
+                "id": 501
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::SetFormElementItems",
+          "description": "",
+          "id": 501,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$populateEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 18,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateEventData.elementId",
+              "source": "$populateEventData.elementId"
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            },
+            "items": {
+              "accessors": [
+                "$populateFeatureFormItems"
+              ],
+              "annotations": [
+                {
+                  "count": 25,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateFeatureFormItems.items",
+              "source": "$populateFeatureFormItems.items"
+            }
+          },
+          "position": "240,1460",
+          "title": "Set Form Element Items"
+        },
+        {
+          "id": 503,
+          "inputs": {},
+          "position": "10,-190",
+          "purpose": "start",
+          "title": "Subworkflow",
+          "transitions": [
+            {
+              "id": 538,
+              "inputs": {},
+              "position": "100,-130 100,-70",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 506
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::GetFormEventData",
+          "id": 506,
+          "inputs": {
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "name": "populateEventData",
+          "position": "-20,-70",
+          "title": "Get Form Event Data",
+          "transitions": [
+            {
+              "id": 540,
+              "inputs": {},
+              "position": "100,0 100,50",
+              "target": {
+                "id": 508
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 508,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$populateEvent"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 2,
+                  "kind": "idref"
+                }
+              ],
+              "code": "!!$populateEvent.arguments",
+              "source": "!!$populateEvent.arguments"
+            }
+          },
+          "position": "40,50",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 542,
+              "inputs": {},
+              "position": "160,80 180,80 180,190 100,190 100,210",
+              "sourceConnector": "right",
+              "target": {
+                "id": 497
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "true",
+              "id": 544,
+              "inputs": {},
+              "position": "40,80 -110,80 -110,110",
+              "sourceConnector": "left",
+              "target": {
+                "id": 510
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::SetProperty",
+          "id": 510,
+          "inputs": {
+            "object": {
+              "accessors": [
+                "$populateEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 18,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateEventData",
+              "source": "$populateEventData "
+            },
+            "propertyName": "elementId",
+            "propertyValue": {
+              "accessors": [
+                "$populateEvent"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateEvent.arguments.elementId",
+              "source": "$populateEvent.arguments.elementId"
+            }
+          },
+          "position": "-230,110",
+          "title": "Set Property",
+          "transitions": [
+            {
+              "id": 546,
+              "inputs": {},
+              "position": "-110,140 -110,190 100,190 100,210",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 497
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Evaluate",
+          "id": 512,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$populateCodedValues"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 139,
+                  "kind": "idref"
+                }
+              ],
+              "code": "(function () {\n    function compare(a, b) {\n        if (a.name < b.name) {\n            return -1;\n        }\n        if (a.name > b.name) {\n            return 1;\n        }\n        return 0;\n    }\n    $populateCodedValues.result.sort(compare);\n})()",
+              "source": "(()=>{\nfunction compare( a, b ) {\n  if ( a.name < b.name ){\n    return -1;\n  }\n  if ( a.name > b.name  ){\n    return 1;\n  }\n  return 0;\n}\n\n$populateCodedValues.result.sort( compare );\n})()"
+            }
+          },
+          "name": "sortedPopulateCodes",
+          "position": "-290,1170",
+          "title": "Evaluate Expression",
+          "transitions": [
+            {
+              "id": 550,
+              "inputs": {},
+              "position": "-170,1240 -170,1300",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 514
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::GetFormElementItemsFromCollection",
+          "id": 514,
+          "inputs": {
+            "collection": {
+              "accessors": [
+                "$populateCodedValues"
+              ],
+              "annotations": [
+                {
+                  "count": 20,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateCodedValues.result",
+              "source": "$populateCodedValues.result"
+            },
+            "labelFieldName": "name",
+            "valueFieldName": "code"
+          },
+          "name": "populateCodedFormItems",
+          "position": "-290,1300",
+          "title": "Get Form Element Items From Collection",
+          "transitions": [
+            {
+              "id": 552,
+              "inputs": {},
+              "position": "-170,1370 -170,1440",
+              "target": {
+                "id": 516
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::SetFormElementItems",
+          "id": 516,
+          "inputs": {
+            "elementName": {
+              "accessors": [
+                "$populateEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 18,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateEventData.elementId",
+              "source": "$populateEventData.elementId"
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            },
+            "items": {
+              "accessors": [
+                "$populateCodedFormItems"
+              ],
+              "annotations": [
+                {
+                  "count": 23,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$populateCodedFormItems.items",
+              "source": "$populateCodedFormItems.items"
+            }
+          },
+          "position": "-290,1440",
+          "title": "Set Form Element Items"
+        }
+      ]
+    },
+    {
+      "id": 554,
+      "steps": [
+        {
+          "action": "uuid:fc5de4bd-b399-4353-82ea-cbf393a350b3::AddQueryElements",
+          "id": 290,
+          "inputs": {
+            "description": {
+              "accessors": [
+                "$formDescription"
+              ],
+              "annotations": [
+                {
+                  "count": 16,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$formDescription.result",
+              "source": "$formDescription.result"
+            },
+            "form": {
+              "accessors": [
+                "$queryForm"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$queryForm",
+              "source": "$queryForm"
+            },
+            "layer": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer.result",
+              "source": "$layer.result"
+            },
+            "searchFields": {
+              "accessors": [
+                "$selectedQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$selectedQuery.result.searchFields",
+              "source": "$selectedQuery.result.searchFields"
+            },
+            "title": {
+              "accessors": [
+                "$formTitle"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$formTitle.result",
+              "source": "$formTitle.result"
+            }
+          },
+          "name": "addConfigurableQueryElements2",
+          "position": "-30,110",
+          "title": "Add Configurable Query Elements"
+        },
+        {
+          "id": 558,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Event",
+          "transitions": [
+            {
+              "id": 316,
+              "inputs": {},
+              "position": "90,60 90,110",
+              "target": {
+                "id": 290
+              }
+            }
+          ]
+        }
+      ],
+      "title": "load-header"
+    },
+    {
+      "id": 562,
+      "steps": [
+        {
+          "id": 564,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Event",
+          "transitions": [
+            {
+              "id": 572,
+              "inputs": {},
+              "position": "90,60 90,110",
+              "target": {
+                "id": 566
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 566,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$noResults"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$noResults.result",
+              "source": "$noResults.result"
+            }
+          },
+          "position": "30,110",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 574,
+              "inputs": {},
+              "position": "30,140 -220,140 -220,250",
+              "target": {
+                "id": 568
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "false",
+              "id": 576,
+              "inputs": {},
+              "position": "150,140 360,140 360,270",
+              "sourceConnector": "right",
+              "target": {
+                "id": 570
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::SetFormElementError",
+          "id": 568,
+          "inputs": {
+            "error": {
+              "accessors": [
+                "getText"
+              ],
+              "code": "getText(values.key)",
+              "source": "@queryForm-error-no-results",
+              "values": {
+                "key": "@queryForm-error-no-results"
+              }
+            },
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "position": "-340,250",
+          "title": "Set Form Element Error"
+        },
+        {
+          "action": "gcx:wf:forms::ClearFormElementError",
+          "id": 570,
+          "inputs": {
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "position": "240,270",
+          "title": "Clear Form Element Error"
+        }
+      ],
+      "title": "load-footer"
+    },
+    {
+      "id": 578,
+      "steps": [
+        {
+          "action": "uuid:fc5de4bd-b399-4353-82ea-cbf393a350b3::GenerateWhereClause",
+          "id": 317,
+          "inputs": {
+            "layer": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer.result",
+              "source": "$layer.result"
+            },
+            "queryFields": {
+              "accessors": [
+                "$selectedQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$selectedQuery.result.searchFields",
+              "source": "$selectedQuery.result.searchFields"
+            },
+            "targetForm": {
+              "accessors": [
+                "$queryForm"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$queryForm",
+              "source": "$queryForm"
+            }
+          },
+          "name": "finalWhereClause",
+          "position": "-30,-130",
+          "title": "Generate Where Clause",
+          "transitions": [
+            {
+              "id": 319,
+              "inputs": {},
+              "position": "90,-60 90,-20",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 582
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis:query:QueryTask",
+          "id": 582,
+          "inputs": {
+            "outFields": "*",
+            "returnGeometry": true,
+            "url": {
+              "accessors": [
+                "$layerUrl"
+              ],
+              "annotations": [
+                {
+                  "count": 9,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layerUrl.result",
+              "source": "$layerUrl.result"
+            },
+            "where": {
+              "accessors": [
+                "$finalWhereClause"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$finalWhereClause.result",
+              "source": "$finalWhereClause.result"
+            }
+          },
+          "name": "layerQuery",
+          "position": "-30,-20",
+          "title": "Query Layer",
+          "transitions": [
+            {
+              "id": 602,
+              "inputs": {},
+              "position": "90,50 90,110",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 584
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 584,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$layerQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 11,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layerQuery.features.length > 0",
+              "source": "$layerQuery.features.length > 0"
+            }
+          },
+          "position": "30,110",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 604,
+              "inputs": {},
+              "position": "30,140 10,140 10,260 90,260 90,280",
+              "sourceConnector": "left",
+              "target": {
+                "id": 586
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "false",
+              "id": 606,
+              "inputs": {},
+              "position": "150,140 460,140 460,270",
+              "sourceConnector": "right",
+              "target": {
+                "id": 588
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:app::RunOperation",
+          "id": 586,
+          "inputs": {
+            "operationName": "results.from-graphics",
+            "operationParameter": {
+              "accessors": [
+                "$layerQuery",
+                "$layer",
+                "$mapInfo"
+              ],
+              "annotations": [
+                {
+                  "count": 11,
+                  "index": 11,
+                  "kind": "idref"
+                },
+                {
+                  "count": 6,
+                  "index": 39,
+                  "kind": "idref"
+                },
+                {
+                  "count": 8,
+                  "index": 61,
+                  "kind": "idref"
+                }
+              ],
+              "code": "{ graphics: $layerQuery.features, layer: $layer.result, maps: [$mapInfo.map.mapExtension] }",
+              "source": "{graphics: $layerQuery.features, layer:$layer.result, maps: [$mapInfo.map.mapExtension]}"
+            }
+          },
+          "name": "resultSet",
+          "position": "-30,280",
+          "title": "Get VertiGIS Features",
+          "transitions": [
+            {
+              "id": 608,
+              "inputs": {},
+              "position": "90,350 90,400",
+              "target": {
+                "id": 590
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::SetProperty",
+          "id": 588,
+          "inputs": {
+            "object": {
+              "accessors": [
+                "$noResults"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$noResults",
+              "source": "$noResults"
+            },
+            "propertyName": "result",
+            "propertyValue": true
+          },
+          "position": "340,270",
+          "title": "Set noResults to true"
+        },
+        {
+          "action": "gcx:wf:core::AddItems",
+          "id": 590,
+          "inputs": {
+            "collection": {
+              "accessors": [
+                "$resultSet"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$resultSet.result",
+              "source": "$resultSet.result"
+            },
+            "itemsToAdd": {
+              "accessors": [
+                "$resultSet"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$resultSet.result",
+              "source": "$resultSet.result"
+            }
+          },
+          "position": "-30,400",
+          "title": "Add Items",
+          "transitions": [
+            {
+              "id": 610,
+              "inputs": {},
+              "position": "90,430 90,480",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 592
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:app::RunCommand",
+          "id": 592,
+          "inputs": {
+            "commandName": "map.go-to-geometry",
+            "commandParameter": {
+              "accessors": [
+                "$resultSet"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$resultSet.result",
+              "source": "$resultSet.result"
+            }
+          },
+          "position": "-30,480",
+          "title": "Zoom to Features",
+          "transitions": [
+            {
+              "id": 612,
+              "inputs": {},
+              "position": "90,510 90,560",
+              "target": {
+                "id": 594
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::SetProperty",
+          "id": 594,
+          "inputs": {
+            "object": {
+              "accessors": [
+                "$noResults"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$noResults",
+              "source": "$noResults"
+            },
+            "propertyName": "result",
+            "propertyValue": false
+          },
+          "position": "-30,560",
+          "title": "Set noResults to false",
+          "transitions": [
+            {
+              "id": 614,
+              "inputs": {},
+              "position": "90,590 90,630",
+              "target": {
+                "id": 596
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:app::RunCommand",
+          "id": 596,
+          "inputs": {
+            "commandName": "results.display",
+            "commandParameter": {
+              "accessors": [
+                "$resultSet"
+              ],
+              "annotations": [
+                {
+                  "count": 10,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$resultSet.result",
+              "source": "$resultSet.result"
+            }
+          },
+          "position": "-30,630",
+          "title": "Display results"
+        },
+        {
+          "id": 598,
+          "inputs": {},
+          "position": "0,-240",
+          "purpose": "start",
+          "title": "Container",
+          "transitions": [
+            {
+              "id": 318,
+              "inputs": {},
+              "position": "90,-180 90,-130",
+              "target": {
+                "id": 317
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 618,
+      "steps": [
+        {
+          "id": 620,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Subworkflow",
+          "transitions": [
+            {
+              "id": 634,
+              "inputs": {},
+              "position": "90,60 90,150",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 622
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::GetFormEventData",
+          "id": 622,
+          "inputs": {
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "name": "validateEventData",
+          "position": "-30,150",
+          "title": "Get Form Event Data",
+          "transitions": [
+            {
+              "id": 636,
+              "inputs": {},
+              "position": "90,220 90,270",
+              "target": {
+                "id": 624
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Log",
+          "id": 624,
+          "inputs": {
+            "message": {
+              "accessors": [],
+              "code": "\"Validae Event\"",
+              "source": "\"Validae Event\""
+            }
+          },
+          "position": "-30,270",
+          "title": "Log",
+          "transitions": [
+            {
+              "id": 640,
+              "inputs": {},
+              "position": "90,300 90,350",
+              "target": {
+                "id": 630
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::RunWorkflow",
+          "id": 626,
+          "inputs": {
+            "arguments": {
+              "accessors": [
+                "$selectedQuery",
+                "$changedEventData",
+                "$inputModel"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 15,
+                  "kind": "idref"
+                },
+                {
+                  "count": 17,
+                  "index": 48,
+                  "kind": "idref"
+                },
+                {
+                  "count": 11,
+                  "index": 78,
+                  "kind": "idref"
+                }
+              ],
+              "code": "{ selectedQuery: $selectedQuery.result, eventData: $changedEventData, inputModel: $inputModel.result, type: \"validate\" }",
+              "source": "{selectedQuery:$selectedQuery.result, eventData:$changedEventData, inputModel:$inputModel.result, type: \"validate\"}"
+            },
+            "url": {
+              "accessors": [
+                "$eventSubWorkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$eventSubWorkflow.result",
+              "source": "$eventSubWorkflow.result"
+            }
+          },
+          "name": "runValidateSubWorkflow",
+          "position": "-210,600",
+          "title": "Run Workflow",
+          "transitions": [
+            {
+              "id": 638,
+              "inputs": {},
+              "position": "-90,670 -90,790 100,790 100,810",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 628
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::PropagateFormEvent",
+          "id": 628,
+          "inputs": {
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "position": "-20,810",
+          "title": "Propagate Form Event"
+        },
+        {
+          "action": "gcx:wf:core::Log",
+          "id": 630,
+          "inputs": {
+            "message": {
+              "accessors": [
+                "$validateEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 18,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$validateEventData",
+              "source": "$validateEventData"
+            }
+          },
+          "position": "-30,350",
+          "title": "Log",
+          "transitions": [
+            {
+              "id": 642,
+              "inputs": {},
+              "position": "90,380 90,430",
+              "target": {
+                "id": 632
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 632,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$hasSubWorkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 15,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$hasSubWorkflow.result",
+              "source": "$hasSubWorkflow.result"
+            }
+          },
+          "position": "30,430",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 644,
+              "inputs": {},
+              "position": "150,460 170,460 170,790 100,790 100,810",
+              "sourceConnector": "right",
+              "target": {
+                "id": 628
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "true",
+              "id": 646,
+              "inputs": {},
+              "position": "30,460 -90,460 -90,600",
+              "sourceConnector": "left",
+              "target": {
+                "id": 626
+              },
+              "targetConnector": "top"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 664,
+      "steps": [
+        {
+          "id": 666,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Subworkflow",
+          "transitions": [
+            {
+              "id": 680,
+              "inputs": {},
+              "position": "90,60 90,130",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 668
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::GetFormEventData",
+          "id": 668,
+          "inputs": {
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "name": "clickedEventData",
+          "position": "-30,130",
+          "title": "Get Form Event Data",
+          "transitions": [
+            {
+              "id": 682,
+              "inputs": {},
+              "position": "90,200 90,250",
+              "target": {
+                "id": 670
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Log",
+          "id": 670,
+          "inputs": {
+            "message": {
+              "accessors": [],
+              "code": "\"Clicked Event\"",
+              "source": "\"Clicked Event\""
+            }
+          },
+          "position": "-30,250",
+          "title": "Log",
+          "transitions": [
+            {
+              "id": 686,
+              "inputs": {},
+              "position": "90,280 90,330",
+              "target": {
+                "id": 676
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::RunWorkflow",
+          "id": 672,
+          "inputs": {
+            "arguments": {
+              "accessors": [
+                "$selectedQuery",
+                "$changedEventData",
+                "$inputModel"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 15,
+                  "kind": "idref"
+                },
+                {
+                  "count": 17,
+                  "index": 48,
+                  "kind": "idref"
+                },
+                {
+                  "count": 11,
+                  "index": 78,
+                  "kind": "idref"
+                }
+              ],
+              "code": "{ selectedQuery: $selectedQuery.result, eventData: $changedEventData, inputModel: $inputModel.result, type: \"clicked\" }",
+              "source": "{selectedQuery:$selectedQuery.result, eventData:$changedEventData, inputModel:$inputModel.result, type: \"clicked\"}"
+            },
+            "url": {
+              "accessors": [
+                "$eventSubWorkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$eventSubWorkflow.result",
+              "source": "$eventSubWorkflow.result"
+            }
+          },
+          "name": "runClickedSubWorkflow",
+          "position": "-260,540",
+          "title": "Run Workflow",
+          "transitions": [
+            {
+              "id": 684,
+              "inputs": {},
+              "position": "-140,610 -140,770 100,770 100,790",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 674
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::PropagateFormEvent",
+          "id": 674,
+          "inputs": {
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "position": "-20,790",
+          "title": "Propagate Form Event"
+        },
+        {
+          "action": "gcx:wf:core::Log",
+          "id": 676,
+          "inputs": {
+            "message": {
+              "accessors": [
+                "$clickedEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$clickedEventData",
+              "source": "$clickedEventData"
+            }
+          },
+          "position": "-30,330",
+          "title": "Log",
+          "transitions": [
+            {
+              "id": 688,
+              "inputs": {},
+              "position": "90,360 90,410",
+              "target": {
+                "id": 678
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 678,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$hasSubWorkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 15,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$hasSubWorkflow.result",
+              "source": "$hasSubWorkflow.result"
+            }
+          },
+          "position": "30,410",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 690,
+              "inputs": {},
+              "position": "150,440 170,440 170,770 100,770 100,790",
+              "sourceConnector": "right",
+              "target": {
+                "id": 674
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "true",
+              "id": 692,
+              "inputs": {},
+              "position": "30,440 -140,440 -140,540",
+              "sourceConnector": "left",
+              "target": {
+                "id": 672
+              },
+              "targetConnector": "top"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 694,
+      "steps": [
+        {
+          "id": 696,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Subworkflow",
+          "transitions": [
+            {
+              "id": 710,
+              "inputs": {},
+              "position": "90,60 90,110",
+              "target": {
+                "id": 698
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::GetFormEventData",
+          "id": 698,
+          "inputs": {
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "name": "changedEventData",
+          "position": "-30,110",
+          "title": "Get Form Event Data",
+          "transitions": [
+            {
+              "id": 712,
+              "inputs": {},
+              "position": "90,180 90,230",
+              "target": {
+                "id": 700
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Log",
+          "id": 700,
+          "inputs": {
+            "message": {
+              "accessors": [],
+              "code": "\"Changed Event\"",
+              "source": "\"Changed Event\""
+            }
+          },
+          "position": "-30,230",
+          "title": "Log",
+          "transitions": [
+            {
+              "id": 714,
+              "inputs": {},
+              "position": "90,260 90,310",
+              "target": {
+                "id": 702
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Log",
+          "id": 702,
+          "inputs": {
+            "message": {
+              "accessors": [
+                "$changedEventData"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$changedEventData",
+              "source": "$changedEventData"
+            }
+          },
+          "position": "-30,310",
+          "title": "Log",
+          "transitions": [
+            {
+              "id": 716,
+              "inputs": {},
+              "position": "90,340 90,390",
+              "target": {
+                "id": 704
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 704,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$hasSubWorkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 15,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$hasSubWorkflow.result",
+              "source": "$hasSubWorkflow.result"
+            }
+          },
+          "position": "30,390",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "false",
+              "id": 327,
+              "position": "150,420 170,420 170,680 50,680 50,700",
+              "sourceConnector": "right",
+              "target": {
+                "id": 706
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "true",
+              "id": 720,
+              "inputs": {},
+              "position": "30,420 -90,420 -90,560",
+              "sourceConnector": "left",
+              "target": {
+                "id": 708
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:forms::PropagateFormEvent",
+          "id": 706,
+          "inputs": {
+            "form": {
+              "accessors": [
+                "$$form"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$$form",
+              "source": "$$form"
+            }
+          },
+          "position": "-70,700",
+          "title": "Propagate Form Event"
+        },
+        {
+          "action": "gcx:wf:core::RunWorkflow",
+          "id": 708,
+          "inputs": {
+            "arguments": {
+              "accessors": [
+                "$selectedQuery",
+                "$changedEventData",
+                "$inputModel"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 15,
+                  "kind": "idref"
+                },
+                {
+                  "count": 17,
+                  "index": 48,
+                  "kind": "idref"
+                },
+                {
+                  "count": 11,
+                  "index": 78,
+                  "kind": "idref"
+                }
+              ],
+              "code": "{ selectedQuery: $selectedQuery.result, eventData: $changedEventData, inputModel: $inputModel.result, type: \"changed\" }",
+              "source": "{selectedQuery:$selectedQuery.result, eventData:$changedEventData, inputModel:$inputModel.result, type: \"changed\"}"
+            },
+            "url": {
+              "accessors": [
+                "$eventSubWorkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$eventSubWorkflow.result",
+              "source": "$eventSubWorkflow.result"
+            }
+          },
+          "name": "runChangedSubWorkflow",
+          "position": "-210,560",
+          "title": "Run Workflow",
+          "transitions": [
+            {
+              "id": 326,
+              "position": "-90,630 -90,680 50,680 50,700",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 706
+              },
+              "targetConnector": "top"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 724,
+      "steps": [
+        {
+          "action": "gcx:wf:core::If",
+          "id": 288,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer.result.type === \"subtype-sublayer\"",
+              "source": "$layer.result.type === \"subtype-sublayer\""
+            }
+          },
+          "position": "30,810",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 301,
+              "inputs": {},
+              "position": "30,840 -190,840 -190,1060",
+              "sourceConnector": "left",
+              "target": {
+                "id": 292
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "false",
+              "id": 304,
+              "inputs": {},
+              "position": "150,840 220,840 220,1060",
+              "sourceConnector": "right",
+              "target": {
+                "id": 294
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Evaluate",
+          "id": 292,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$layerUrl",
+                "$layer",
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 9,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 6,
+                  "index": 22,
+                  "kind": "idref"
+                },
+                {
+                  "count": 6,
+                  "index": 50,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layerUrl.result = \"\".concat($layer.result.parent.url, \"/\").concat($layer.result.parent.layerId)",
+              "source": "$layerUrl.result = `${$layer.result.parent.url}/${$layer.result.parent.layerId}`"
+            }
+          },
+          "name": "subtypeCase",
+          "position": "-310,1060",
+          "title": "Evaluate Expression"
+        },
+        {
+          "action": "gcx:wf:core::Evaluate",
+          "id": 294,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$layerUrl",
+                "$layer",
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 9,
+                  "index": 0,
+                  "kind": "idref"
+                },
+                {
+                  "count": 6,
+                  "index": 22,
+                  "kind": "idref"
+                },
+                {
+                  "count": 6,
+                  "index": 43,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layerUrl.result = \"\".concat($layer.result.url, \"/\").concat($layer.result.layerId)",
+              "source": "$layerUrl.result = `${$layer.result.url}/${$layer.result.layerId}`"
+            }
+          },
+          "name": "others",
+          "position": "100,1060",
+          "title": "Evaluate Expression"
+        },
+        {
+          "id": 726,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Container",
+          "transitions": [
+            {
+              "id": 744,
+              "inputs": {},
+              "position": "90,60 90,110",
+              "target": {
+                "id": 728
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis::GetLayer",
+          "id": 728,
+          "inputs": {
+            "layerId": {
+              "accessors": [
+                "$selectedQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$selectedQuery.result.layerId",
+              "source": "$selectedQuery.result.layerId"
+            }
+          },
+          "name": "targetLayer",
+          "position": "-30,110",
+          "title": "Get Layer",
+          "transitions": [
+            {
+              "id": 746,
+              "inputs": {},
+              "position": "90,180 90,230",
+              "target": {
+                "id": 730
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 730,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$targetLayer"
+              ],
+              "annotations": [
+                {
+                  "count": 12,
+                  "index": 1,
+                  "kind": "idref"
+                }
+              ],
+              "code": "!$targetLayer.layer",
+              "source": "!$targetLayer.layer"
+            }
+          },
+          "position": "30,230",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 748,
+              "inputs": {},
+              "position": "30,260 -40,260 -40,340",
+              "sourceConnector": "left",
+              "target": {
+                "id": 732
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "false",
+              "id": 750,
+              "inputs": {},
+              "position": "150,260 220,260 220,340",
+              "sourceConnector": "right",
+              "target": {
+                "id": 734
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Evaluate",
+          "description": "If the layer isn't found then search the map by layer title and layer ID",
+          "id": 732,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$mapInfo",
+                "$selectedQuery",
+                "$mapInfo",
+                "$selectedQuery",
+                "$selectedQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 8,
+                  "index": 27,
+                  "kind": "idref"
+                },
+                {
+                  "count": 14,
+                  "index": 75,
+                  "kind": "idref"
+                },
+                {
+                  "count": 8,
+                  "index": 152,
+                  "kind": "idref"
+                },
+                {
+                  "count": 14,
+                  "index": 291,
+                  "kind": "idref"
+                },
+                {
+                  "count": 14,
+                  "index": 407,
+                  "kind": "idref"
+                }
+              ],
+              "code": "(function () {\n    var layer = $mapInfo.map.map.allLayers.find(function (x) { return x.title === $selectedQuery.result.layerId; });\n    if (layer == undefined) {\n        for (var _i = 0, _a = $mapInfo.map.map.allLayers.items; _i < _a.length; _i++) {\n            var l = _a[_i];\n            if (l.type === \"subtype-group\") {\n                var found = l.sublayers.items.some(function (x) { return x.title === $selectedQuery.result.layerId; });\n                if (found) {\n                    layer = l.sublayers.items.find(function (x) { return x.title === $selectedQuery.result.layerId; });\n                    ;\n                }\n            }\n        }\n    }\n    return layer;\n})()",
+              "source": "(function(){\n  var layer = $mapInfo.map.map.allLayers.find(x=> x.title === $selectedQuery.result.layerId);\n  if(layer == undefined) {\n     for(var l of $mapInfo.map.map.allLayers.items) {\n        if(l.type === \"subtype-group\") {\n           var found = l.sublayers.items.some(x=> x.title === $selectedQuery.result.layerId);\n           if(found) {\n              layer = l.sublayers.items.find(x=> x.title === $selectedQuery.result.layerId);;\n           }\n\n\n        }\n      }\n  }\n\n  return layer;\n})()"
+            }
+          },
+          "name": "findLayerFunction",
+          "position": "-160,340",
+          "title": "Find layer function",
+          "transitions": [
+            {
+              "id": 752,
+              "inputs": {},
+              "position": "-40,470 -40,510",
+              "target": {
+                "id": 736
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::SetProperty",
+          "id": 734,
+          "inputs": {
+            "object": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer",
+              "source": "$layer"
+            },
+            "propertyName": "result",
+            "propertyValue": {
+              "accessors": [
+                "$targetLayer"
+              ],
+              "annotations": [
+                {
+                  "count": 12,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$targetLayer.layer",
+              "source": "$targetLayer.layer"
+            }
+          },
+          "position": "100,340",
+          "title": "Set Property",
+          "transitions": [
+            {
+              "id": 754,
+              "inputs": {},
+              "position": "220,370 220,790 90,790 90,810",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 288
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::If",
+          "id": 736,
+          "inputs": {
+            "condition": {
+              "accessors": [
+                "$findLayerFunction"
+              ],
+              "annotations": [
+                {
+                  "count": 18,
+                  "index": 2,
+                  "kind": "idref"
+                }
+              ],
+              "code": "!!$findLayerFunction.result",
+              "source": "!!$findLayerFunction.result"
+            }
+          },
+          "position": "-100,510",
+          "title": "If",
+          "transitions": [
+            {
+              "branch": "true",
+              "id": 756,
+              "inputs": {},
+              "position": "-100,540 -190,540 -190,660",
+              "sourceConnector": "left",
+              "target": {
+                "id": 740
+              },
+              "targetConnector": "top"
+            },
+            {
+              "branch": "false",
+              "id": 758,
+              "inputs": {},
+              "position": "20,540 70,540 70,660",
+              "sourceConnector": "right",
+              "target": {
+                "id": 742
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::SetProperty",
+          "id": 740,
+          "inputs": {
+            "object": {
+              "accessors": [
+                "$layer"
+              ],
+              "annotations": [
+                {
+                  "count": 6,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$layer",
+              "source": "$layer"
+            },
+            "propertyName": "result",
+            "propertyValue": {
+              "accessors": [
+                "$findLayerFunction"
+              ],
+              "annotations": [
+                {
+                  "count": 18,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$findLayerFunction.result",
+              "source": "$findLayerFunction.result"
+            }
+          },
+          "position": "-310,660",
+          "title": "Set Property",
+          "transitions": [
+            {
+              "id": 760,
+              "inputs": {},
+              "position": "-190,690 -190,790 90,790 90,810",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 288
+              },
+              "targetConnector": "top"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::Throw",
+          "id": 742,
+          "inputs": {
+            "message": {
+              "accessors": [
+                "getText"
+              ],
+              "code": "getText(values.key)",
+              "source": "@exception-layer-not-found",
+              "values": {
+                "key": "@exception-layer-not-found"
+              }
+            }
+          },
+          "position": "-50,660",
+          "title": "Throw"
+        }
+      ]
+    },
+    {
+      "id": 762,
+      "steps": [
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 302,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$selectedQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$selectedQuery.result.formTitle",
+              "source": "$selectedQuery.result.formTitle"
+            }
+          },
+          "name": "formTitle",
+          "position": "1010,90",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 307,
+              "inputs": {},
+              "position": "1130,160 1130,220",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 305
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 305,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$selectedQuery"
+              ],
+              "annotations": [
+                {
+                  "count": 14,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$selectedQuery.result.formDescription",
+              "source": "$selectedQuery.result.formDescription"
+            }
+          },
+          "name": "formDescription",
+          "position": "1010,220",
+          "title": "Create Value"
+        },
+        {
+          "id": 764,
+          "inputs": {},
+          "position": "0,0",
+          "purpose": "start",
+          "title": "Container",
+          "transitions": [
+            {
+              "id": 800,
+              "inputs": {},
+              "position": "90,60 90,100",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 766
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::GetWorkflowInputs",
+          "id": 766,
+          "inputs": {},
+          "name": "workflowInputs",
+          "position": "-30,100",
+          "title": "Get Workflow Inputs",
+          "transitions": [
+            {
+              "id": 784,
+              "inputs": {},
+              "position": "90,170 90,220",
+              "target": {
+                "id": 768
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 768,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$workflowInputs"
+              ],
+              "annotations": [
+                {
+                  "count": 15,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflowInputs.inputs.selectedQuery",
+              "source": "$workflowInputs.inputs.selectedQuery"
+            }
+          },
+          "name": "selectedQuery",
+          "position": "-30,220",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 786,
+              "inputs": {},
+              "position": "90,290 90,340",
+              "sourceConnector": "bottom",
+              "target": {
+                "id": 770
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:arcgis::GetMap",
+          "id": 770,
+          "inputs": {},
+          "name": "mapInfo",
+          "position": "-30,340",
+          "title": "Get Map",
+          "transitions": [
+            {
+              "id": 788,
+              "inputs": {},
+              "position": "210,375 280,375 280,135 300,135",
+              "target": {
+                "id": 772
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 772,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$workflowInputs"
+              ],
+              "annotations": [
+                {
+                  "count": 15,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflowInputs.inputs.inputModel",
+              "source": "$workflowInputs.inputs.inputModel"
+            }
+          },
+          "name": "inputModel",
+          "position": "300,100",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 794,
+              "inputs": {},
+              "position": "420,170 420,220",
+              "target": {
+                "id": 780
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 774,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$workflowInputs"
+              ],
+              "annotations": [
+                {
+                  "count": 15,
+                  "index": 0,
+                  "kind": "idref"
+                }
+              ],
+              "code": "$workflowInputs.inputs.eventSubWorkflow",
+              "source": "$workflowInputs.inputs.eventSubWorkflow"
+            }
+          },
+          "name": "eventSubWorkflow",
+          "position": "630,100",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 790,
+              "inputs": {},
+              "position": "750,170 750,220",
+              "target": {
+                "id": 776
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 776,
+          "inputs": {
+            "expression": {
+              "accessors": [
+                "$eventSubWorkflow"
+              ],
+              "annotations": [
+                {
+                  "count": 17,
+                  "index": 2,
+                  "kind": "idref"
+                }
+              ],
+              "code": "!!$eventSubWorkflow.result",
+              "source": "!!$eventSubWorkflow.result"
+            }
+          },
+          "name": "hasSubWorkflow",
+          "position": "630,220",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 792,
+              "inputs": {},
+              "position": "750,290 750,340",
+              "target": {
+                "id": 778
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 778,
+          "inputs": {},
+          "name": "layerUrl",
+          "position": "630,340",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 306,
+              "inputs": {},
+              "position": "870,375 990,375 990,125 1010,125",
+              "sourceConnector": "right",
+              "target": {
+                "id": 302
+              },
+              "targetConnector": "left"
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 780,
+          "inputs": {},
+          "name": "layer",
+          "position": "300,220",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 796,
+              "inputs": {},
+              "position": "420,290 420,340",
+              "target": {
+                "id": 782
+              }
+            }
+          ]
+        },
+        {
+          "action": "gcx:wf:core::CreateValue",
+          "id": 782,
+          "inputs": {
+            "expression": {
+              "accessors": [],
+              "code": "false",
+              "source": "false"
+            }
+          },
+          "name": "noResults",
+          "position": "300,340",
+          "title": "Create Value",
+          "transitions": [
+            {
+              "id": 798,
+              "inputs": {},
+              "position": "540,375 610,375 610,135 630,135",
+              "target": {
+                "id": 774
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "deploymentConfig": {
+    "supportedApps": {
+      "VSW": true
+    }
+  },
+  "designerVersion": "5.36.0+40",
+  "forms": [
+    {
+      "defaults": {},
+      "elements": {
+        "footer": {
+          "enabled": true,
+          "items": {
+            "0": {
+              "default": true,
+              "index": 0,
+              "label": {
+                "markdown": "@queryForm-buttons-submit"
+              },
+              "validates": true,
+              "value": "submit"
+            },
+            "1": {
+              "index": 1,
+              "label": {
+                "markdown": "@queryForm-buttons-back"
+              },
+              "value": "back"
+            },
+            "2": {
+              "index": 2,
+              "label": {
+                "markdown": "@queryForm-buttons-cancel"
+              },
+              "validates": false,
+              "value": "cancel"
+            }
+          },
+          "section": "footer",
+          "type": "ButtonBar",
+          "visible": true
+        },
+        "header": {
+          "section": "header",
+          "title": {
+            "markdown": "@queryForm-title"
+          },
+          "type": "Header"
+        }
+      },
+      "id": 802
+    }
+  ],
+  "licenseInfo": {
+    "licenseeId": "88cb61d6-af47-9b3e-5181-ed674c4c0815"
+  },
+  "references": [
+    {
+      "id": 330,
+      "path": "https://localhost:5000",
+      "suite": "uuid:fc5de4bd-b399-4353-82ea-cbf393a350b3"
+    }
+  ],
+  "start": {
+    "id": 3
+  },
+  "strings": {
+    "de": {
+      "exception-field-not-found": "Abfragefeld im Ziellayer nicht gefunden.  Bitte wenden Sie sich an den Anwendungsadministrator.",
+      "exception-layer-not-found": "Ziellayer nicht in Webkarte gefunden. Bitte kontaktieren Sie den Systemadministrator",
+      "queriesListForm-buttons-cancel": "Abbrechen",
+      "queriesListForm-buttons-refine": "Abfrage ändern",
+      "queriesListForm-buttons-run": "Abfragen",
+      "queriesListForm-title": "Gespeichert Abfragen",
+      "queryForm-buttons-back": "Zurück",
+      "queryForm-buttons-cancel": "Abbrechen",
+      "queryForm-buttons-submit": "Starten",
+      "queryForm-error-no-results": "Die Abfrage hat keine Ergebnisse zurückgegeben. Bitte passen Sie die Parameter an und versuchen Sie es erneut.",
+      "queryForm-queriesList-description": "Wählen Sie eine Abfrage auch der untenstehenden Liste aus.",
+      "queryForm-queriesList-title": "Gespeicherte Abfragen",
+      "queryForm-title": "Layerabfrage"
+    },
+    "inv": {
+      "exception-field-not-found": "Query field not found in target layer.  Please contact the application administrator.",
+      "exception-layer-not-found": "Target layer not found in web map. Please contact the system administrator",
+      "queriesListForm-buttons-cancel": "Cancel",
+      "queriesListForm-buttons-refine": "Refine Query",
+      "queriesListForm-buttons-run": "Run Query",
+      "queriesListForm-title": "Configurable Queries",
+      "queryForm-buttons-back": "Back",
+      "queryForm-buttons-cancel": "Cancel",
+      "queryForm-buttons-submit": "Submit",
+      "queryForm-error-no-results": "The query return no results.  Please adjust the parameters and try again.",
+      "queryForm-queriesList-description": "Select the query from the list below.",
+      "queryForm-queriesList-title": "Configurable Queries",
+      "queryForm-title": "Layer Query"
+    }
+  },
+  "transitions": [
+    {
+      "branch": "content",
+      "id": 261,
+      "inputs": {},
+      "source": {
+        "id": 259
+      },
+      "target": {
+        "id": 245
+      }
+    },
+    {
+      "branch": "content",
+      "id": 836,
+      "inputs": {},
+      "source": {
+        "id": 804
+      },
+      "target": {
+        "id": 764
+      }
+    },
+    {
+      "branch": "content",
+      "id": 838,
+      "inputs": {},
+      "source": {
+        "id": 806
+      },
+      "target": {
+        "id": 726
+      }
+    },
+    {
+      "branch": "content",
+      "id": 840,
+      "inputs": {},
+      "source": {
+        "id": 810
+      },
+      "target": {
+        "id": 696
+      }
+    },
+    {
+      "branch": "content",
+      "id": 842,
+      "inputs": {},
+      "source": {
+        "id": 818
+      },
+      "target": {
+        "id": 666
+      }
+    },
+    {
+      "branch": "content",
+      "id": 846,
+      "inputs": {},
+      "source": {
+        "id": 822
+      },
+      "target": {
+        "id": 620
+      }
+    },
+    {
+      "branch": "content",
+      "id": 848,
+      "inputs": {},
+      "source": {
+        "id": 828
+      },
+      "target": {
+        "id": 598
+      }
+    },
+    {
+      "branch": "load$footer",
+      "id": 850,
+      "inputs": {},
+      "source": {
+        "id": 830
+      },
+      "target": {
+        "id": 564
+      }
+    },
+    {
+      "branch": "load$header",
+      "id": 852,
+      "inputs": {},
+      "source": {
+        "id": 830
+      },
+      "target": {
+        "id": 558
+      }
+    },
+    {
+      "branch": "content",
+      "id": 854,
+      "inputs": {},
+      "source": {
+        "id": 832
+      },
+      "target": {
+        "id": 503
+      }
+    },
+    {
+      "branch": "content",
+      "id": 856,
+      "inputs": {},
+      "source": {
+        "id": 834
+      },
+      "target": {
+        "id": 443
+      }
+    }
+  ]
+}

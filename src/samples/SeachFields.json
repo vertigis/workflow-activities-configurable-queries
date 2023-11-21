@@ -1,0 +1,68 @@
+[
+  {
+    "title": "ASSETGROUP",
+    "type": "DropDownList",
+    "field": "ASSETGROUP",
+    "operator": "=",
+    "cascade": false
+  },
+  {
+    "title": "ASSETTYPE",
+    "type": "DropDownList",
+    "field": "ASSETTYPE",
+    "operator": "=",
+    "cascade": true,
+    "events": {
+      "populate": "populateEvent"
+    }
+  },
+  {
+    "title": "ASSOCIATIONSTATUS",
+    "type": "DropDownList",
+    "field": "ASSOCIATIONSTATUS",
+    "operator": "=",
+    "cascade": true,
+    "events": {
+      "populate": "populateEvent",
+      "changed": "changedEvent"
+    }
+  },
+  {
+    "title": "FROMDEVICETERMINAL",
+    "type": "DropDownList",
+    "field": "FROMDEVICETERMINAL",
+    "operator": "=",
+    "cascade": true,
+    "events": {
+      "populate": "populateEvent",
+      "changed": "changedEvent"
+    }
+  },
+  {
+    "title": "CREATIONDATE",
+    "type": "DatePicker",
+    "field": "CREATIONDATE",
+    "operator": "<=",
+    "cascade": false,
+    "value": {
+      "refValueType": "date",
+      "format": "device",
+      "display": "11/20/2023, 12:00:00 AM",
+      "value": 1700467200000
+    },
+    "events": {
+      "changed": "changedEvent"
+    }
+  },
+  {
+    "title": "assetid",
+    "type": "ItemPicker",
+    "field": "assetid",
+    "operator": "IN",
+    "cascade": true,
+    "events": {
+      "populate": "populateEvent",
+      "changed": "changedEvent"
+    }
+  }
+]
