@@ -25,8 +25,8 @@ To use these activities in [VertiGIS Studio Workflow Designer](https://apps.vert
     - Purpose: `Ready To Use`
     - API: `JavaScript`
     - URL: The URL to this activity pack manifest
-        - Use https://unpkg.com/@vertigis/workflow-activities-arcgis-core/activitypack.json for the latest version
-        - Use https://unpkg.com/@vertigis/workflow-activities-arcgis-core@1.0.0/activitypack.json for a specific version
+        - Use https://unpkg.com/@vertigis/workflow-activities-configurable-queries/activitypack.json for the latest version
+        - Use https://unpkg.com/@vertigis/workflow-activities-configurable-queries@1.0.0/activitypack.json for a specific version
     - Title: Your desired title
     - Tags: Must include `geocortex-workflow-activity-pack`
 1. Reload [VertiGIS Studio Workflow Designer](https://apps.vertigisstudio.com/workflow/designer/)
