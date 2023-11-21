@@ -33,7 +33,7 @@ The [Add Query Elements](https://github.com/vertigis/workflow-activities-configu
         "TimePicker",
     
   /* The title to appear for the search element. (Required) */
-  title: string;
+  title: string,
   /* The description to appear for the search element. (Optional) */
   description: string,
   /* The default value of the search field.  Only applies when cascade is false.  (Optional) */
@@ -48,6 +48,6 @@ The [Add Query Elements](https://github.com/vertigis/workflow-activities-configu
     validate: string | undefined,
   },
   /* A form element JSON object.  This is useful when finer grained control over the form is required. (Optional) */
-  element: defs.Element;
+  element: defs.Element
 }
 ```
