@@ -5,7 +5,7 @@ This project contains activities for generating and executing configurable queri
 The [Add Query Elements](.src/activities/AddStoreQueryElements) activity accepts an array of Search Field JSON objects as an input.  [The SearchFields.json](./examples/SearchFields.json) file provides an example.
 
 ### Search Field Schema
-```json
+```js
 {
   /* The name of layer field to search (Required) */
   field: string,
