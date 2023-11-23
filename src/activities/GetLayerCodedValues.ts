@@ -18,9 +18,9 @@ export interface GetLayerCodedValuesInputs {
     field: string;
 
     /**
-     * @description: The subtype code to apply to the lookup (optional).  This is only required when the target layer is a Subtype Group Layer.
+     * @description: The type or subtype code to apply to the lookup (optional).
      */
-    subTypeCode?: number;
+    typeCode?: number;
 }
 
 export interface GetLayerCodedValuesOutputs {
@@ -38,7 +38,7 @@ export interface GetLayerCodedValuesOutputs {
  */
 export default class GetLayerCodedValues implements IActivityHandler {
     execute(inputs: GetLayerCodedValuesInputs): GetLayerCodedValuesOutputs {
-        const { field, layer, subTypeCode } = inputs;
+        const { field, layer, typeCode } = inputs;
         if (!layer) {
             throw new Error("layer is required");
         }
@@ -47,11 +47,7 @@ export default class GetLayerCodedValues implements IActivityHandler {
         }
 
         return {
-            result: GetLayerCodedValues.getCodedValues(
-                layer,
-                field,
-                subTypeCode,
-            ),
+            result: GetLayerCodedValues.getCodedValues(layer, field, typeCode),
         };
     }
 
@@ -61,58 +57,64 @@ export default class GetLayerCodedValues implements IActivityHandler {
             | __esri.SubtypeGroupLayer
             | __esri.SubtypeSublayer,
         fieldName: string,
-        subtypeCode?: number,
+        typeCode?: number,
     ): CodedValue[] | undefined {
-        const isSubtypeField =
-            (layer as any).subtypeField?.toLocaleLowerCase() ===
-            fieldName.toLocaleLowerCase();
-        if (isSubtypeField) {
-            return (layer as any).subtypes;
-        }
-        const domain = this.getDomain(layer, fieldName, subtypeCode);
-        return domain?.codedValues;
-    }
-
-    private static getDomain(
-        layer:
-            | __esri.FeatureLayer
-            | __esri.SubtypeGroupLayer
-            | __esri.SubtypeSublayer,
-        fieldName: string,
-        subtypeCode?: number,
-    ): Domain | undefined {
         if (!layer || !fieldName) {
             return;
         }
 
         let layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer;
-        let code = subtypeCode;
+        let code = typeCode;
         if (layer.type === "subtype-sublayer") {
-            layerInfo = layer.parent;
+            layerInfo = layer.parent.sourceJSON;
             code = layer.subtypeCode;
         } else {
-            layerInfo = layer;
+            layerInfo = layer.sourceJSON;
+            code = typeCode;
+        }
+        const isSubtypeField =
+            layerInfo.subtypeField?.toLocaleLowerCase() ===
+            fieldName.toLocaleLowerCase();
+        if (isSubtypeField) {
+            return layerInfo.subtypes;
+        }
+        const domain = this.getDomain(layerInfo, fieldName, code);
+        return domain?.codedValues;
+    }
+
+    private static getDomain(
+        layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer,
+        fieldName: string,
+        code?: number,
+    ): Domain | undefined {
+        if (!layerInfo || !fieldName) {
+            return;
         }
 
-        // we first check on the level of the subtype if we can find a domain configuration
+        let typeInfo: __esri.Subtype | __esri.FeatureType | undefined;
 
-        if (layerInfo.type === "subtype-group" && subtypeCode) {
-            const subtypeInfo = layerInfo.subtypes?.find(
+        if (layerInfo.type === "subtype-group") {
+            typeInfo = layerInfo.subtypes?.find(
                 (subtype) => subtype.code === code,
             );
-            const domains = subtypeInfo?.domains;
+        } else if (layerInfo.types) {
+            typeInfo = layerInfo.types.find((type) => type.id === code);
+        }
+        if (typeInfo) {
+            const domains = typeInfo?.domains;
             if (domains) {
                 const domain = this.getValueIgnoringCase(
                     fieldName,
                     domains,
                 ) as Domain;
-                if (domain && domain.codedValues instanceof Array) {
+                if (
+                    domain?.codedValues &&
+                    domain.codedValues instanceof Array
+                ) {
                     return domain;
                 }
             }
         }
-
-        // then we continue on the level of the layerInfo
         return this.getFieldDomain(layerInfo, fieldName);
     }
 
