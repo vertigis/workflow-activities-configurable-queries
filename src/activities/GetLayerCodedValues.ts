@@ -72,28 +72,19 @@ export default class GetLayerCodedValues implements IActivityHandler {
         return domain?.codedValues;
     }
     
-    private static getDomain(layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer, fieldName: string, code?:number): Domain | undefined {
+    private static getDomain(layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer, fieldName: string, code?: number): Domain | undefined {
         if (!layerInfo || !fieldName) {
             return;
         }
-
-
-        // we first check on the level of the subtype if we can find a domain configuration
         
-        if (layerInfo.type === "subtype-group" && code) {
-            const subtypeInfo = layerInfo.subtypes?.find((subtype) => subtype.code === code);
-            const domains = subtypeInfo?.domains;
-            if (domains) {
-                const domain = this.getValueIgnoringCase(
-                    fieldName,
-                    domains,
-                ) as Domain;
-                if (domain && domain.codedValues instanceof Array) {
-                    return domain;
-                }
-            }
-        } else if ((layerInfo as __esri.FeatureLayer).types && code) {
-            const typeInfo = (layerInfo as __esri.FeatureLayer).types.find((type) => type.id === code);
+        let typeInfo: __esri.Subtype | __esri.FeatureType | undefined;
+
+        if (layerInfo.type === "subtype-group") {
+            typeInfo = layerInfo.subtypes?.find((subtype) => subtype.code === code);
+        } else if (layerInfo.types) {
+            typeInfo = layerInfo.types.find((type) => type.id === code);
+        }
+        if(typeInfo){
             const domains = typeInfo?.domains;
             if(domains){
                 const domain = this.getValueIgnoringCase(fieldName, domains) as Domain;
@@ -102,8 +93,6 @@ export default class GetLayerCodedValues implements IActivityHandler {
                 }
             }
         }
-
-        // then we continue on the level of the layerInfo
         return this.getFieldDomain(layerInfo, fieldName);
     }
 
