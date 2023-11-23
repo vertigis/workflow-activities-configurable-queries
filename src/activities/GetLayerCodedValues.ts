@@ -48,13 +48,6 @@ export default class GetLayerCodedValues implements IActivityHandler {
         
         return { result: GetLayerCodedValues.getCodedValues(layer, field, typeCode) }
 
-        return {
-            result: GetLayerCodedValues.getCodedValues(
-                layer,
-                field,
-                typeCode,
-            ),
-        };
     }
 
     static getCodedValues(layer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.SubtypeSublayer, fieldName: string, typeCode?: number): CodedValue[] | undefined {
