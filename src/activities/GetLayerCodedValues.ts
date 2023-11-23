@@ -18,7 +18,7 @@ export interface GetLayerCodedValuesInputs {
     field: string;
 
     /**
-     * @description: The subtype code to apply to the lookup (optional).  This is only required when the target layer is a Subtype Group Layer.
+     * @description: The type or subtype code to apply to the lookup (optional).
      */
     typeCode?: number
 }
