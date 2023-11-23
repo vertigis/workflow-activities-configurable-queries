@@ -20,7 +20,7 @@ export interface GetLayerCodedValuesInputs {
     /**
      * @description: The subtype code to apply to the lookup (optional).  This is only required when the target layer is a Subtype Group Layer.
      */
-    subTypeCode?: number;
+    typeCode?: number
 }
 
 export interface GetLayerCodedValuesOutputs {
@@ -38,68 +38,57 @@ export interface GetLayerCodedValuesOutputs {
  */
 export default class GetLayerCodedValues implements IActivityHandler {
     execute(inputs: GetLayerCodedValuesInputs): GetLayerCodedValuesOutputs {
-        const { field, layer, subTypeCode } = inputs;
+        const { field, layer, typeCode} = inputs;
         if (!layer) {
             throw new Error("layer is required");
         }
         if (!field) {
             throw new Error("field is required");
         }
+        
+        return { result: GetLayerCodedValues.getCodedValues(layer, field, typeCode) }
 
         return {
             result: GetLayerCodedValues.getCodedValues(
                 layer,
                 field,
-                subTypeCode,
+                typeCode,
             ),
         };
     }
 
-    static getCodedValues(
-        layer:
-            | __esri.FeatureLayer
-            | __esri.SubtypeGroupLayer
-            | __esri.SubtypeSublayer,
-        fieldName: string,
-        subtypeCode?: number,
-    ): CodedValue[] | undefined {
-        const isSubtypeField =
-            (layer as any).subtypeField?.toLocaleLowerCase() ===
-            fieldName.toLocaleLowerCase();
-        if (isSubtypeField) {
-            return (layer as any).subtypes;
-        }
-        const domain = this.getDomain(layer, fieldName, subtypeCode);
-        return domain?.codedValues;
-    }
-
-    private static getDomain(
-        layer:
-            | __esri.FeatureLayer
-            | __esri.SubtypeGroupLayer
-            | __esri.SubtypeSublayer,
-        fieldName: string,
-        subtypeCode?: number,
-    ): Domain | undefined {
+    static getCodedValues(layer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.SubtypeSublayer, fieldName: string, typeCode?: number): CodedValue[] | undefined {
         if (!layer || !fieldName) {
             return;
         }
 
         let layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer;
-        let code = subtypeCode;
-        if (layer.type === "subtype-sublayer") {
-            layerInfo = layer.parent;
+        let code = typeCode;
+        if(layer.type === "subtype-sublayer") {
+            layerInfo = layer.parent.sourceJSON;
             code = layer.subtypeCode;
         } else {
-            layerInfo = layer;
+            layerInfo = layer.sourceJSON;
+            code = typeCode;
+        }
+        const isSubtypeField = layerInfo.subtypeField?.toLocaleLowerCase() === fieldName.toLocaleLowerCase();
+        if (isSubtypeField) {
+            return layerInfo.subtypes;
+        }
+        const domain =this.getDomain(layerInfo, fieldName, code);
+        return domain?.codedValues;
+    }
+    
+    private static getDomain(layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer, fieldName: string, code?:number): Domain | undefined {
+        if (!layerInfo || !fieldName) {
+            return;
         }
 
-        // we first check on the level of the subtype if we can find a domain configuration
 
-        if (layerInfo.type === "subtype-group" && subtypeCode) {
-            const subtypeInfo = layerInfo.subtypes?.find(
-                (subtype) => subtype.code === code,
-            );
+        // we first check on the level of the subtype if we can find a domain configuration
+        
+        if (layerInfo.type === "subtype-group" && code) {
+            const subtypeInfo = layerInfo.subtypes?.find((subtype) => subtype.code === code);
             const domains = subtypeInfo?.domains;
             if (domains) {
                 const domain = this.getValueIgnoringCase(
@@ -107,6 +96,15 @@ export default class GetLayerCodedValues implements IActivityHandler {
                     domains,
                 ) as Domain;
                 if (domain && domain.codedValues instanceof Array) {
+                    return domain;
+                }
+            }
+        } else if ((layerInfo as __esri.FeatureLayer).types && code) {
+            const typeInfo = (layerInfo as __esri.FeatureLayer).types.find((type) => type.id === code);
+            const domains = typeInfo?.domains;
+            if(domains){
+                const domain = this.getValueIgnoringCase(fieldName, domains) as Domain;
+                if(domain?.codedValues && domain.codedValues instanceof Array) {
                     return domain;
                 }
             }
