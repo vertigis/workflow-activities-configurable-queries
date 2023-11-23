@@ -20,7 +20,7 @@ export interface GetLayerCodedValuesInputs {
     /**
      * @description: The type or subtype code to apply to the lookup (optional).
      */
-    typeCode?: number
+    typeCode?: number;
 }
 
 export interface GetLayerCodedValuesOutputs {
@@ -38,57 +38,79 @@ export interface GetLayerCodedValuesOutputs {
  */
 export default class GetLayerCodedValues implements IActivityHandler {
     execute(inputs: GetLayerCodedValuesInputs): GetLayerCodedValuesOutputs {
-        const { field, layer, typeCode} = inputs;
+        const { field, layer, typeCode } = inputs;
         if (!layer) {
             throw new Error("layer is required");
         }
         if (!field) {
             throw new Error("field is required");
         }
-        
-        return { result: GetLayerCodedValues.getCodedValues(layer, field, typeCode) }
 
+        return {
+            result: GetLayerCodedValues.getCodedValues(layer, field, typeCode),
+        };
     }
 
-    static getCodedValues(layer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.SubtypeSublayer, fieldName: string, typeCode?: number): CodedValue[] | undefined {
+    static getCodedValues(
+        layer:
+            | __esri.FeatureLayer
+            | __esri.SubtypeGroupLayer
+            | __esri.SubtypeSublayer,
+        fieldName: string,
+        typeCode?: number,
+    ): CodedValue[] | undefined {
         if (!layer || !fieldName) {
             return;
         }
 
         let layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer;
         let code = typeCode;
-        if(layer.type === "subtype-sublayer") {
+        if (layer.type === "subtype-sublayer") {
             layerInfo = layer.parent.sourceJSON;
             code = layer.subtypeCode;
         } else {
             layerInfo = layer.sourceJSON;
             code = typeCode;
         }
-        const isSubtypeField = layerInfo.subtypeField?.toLocaleLowerCase() === fieldName.toLocaleLowerCase();
+        const isSubtypeField =
+            layerInfo.subtypeField?.toLocaleLowerCase() ===
+            fieldName.toLocaleLowerCase();
         if (isSubtypeField) {
             return layerInfo.subtypes;
         }
-        const domain =this.getDomain(layerInfo, fieldName, code);
+        const domain = this.getDomain(layerInfo, fieldName, code);
         return domain?.codedValues;
     }
-    
-    private static getDomain(layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer, fieldName: string, code?: number): Domain | undefined {
+
+    private static getDomain(
+        layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer,
+        fieldName: string,
+        code?: number,
+    ): Domain | undefined {
         if (!layerInfo || !fieldName) {
             return;
         }
-        
+
         let typeInfo: __esri.Subtype | __esri.FeatureType | undefined;
 
         if (layerInfo.type === "subtype-group") {
-            typeInfo = layerInfo.subtypes?.find((subtype) => subtype.code === code);
+            typeInfo = layerInfo.subtypes?.find(
+                (subtype) => subtype.code === code,
+            );
         } else if (layerInfo.types) {
             typeInfo = layerInfo.types.find((type) => type.id === code);
         }
-        if(typeInfo){
+        if (typeInfo) {
             const domains = typeInfo?.domains;
-            if(domains){
-                const domain = this.getValueIgnoringCase(fieldName, domains) as Domain;
-                if(domain?.codedValues && domain.codedValues instanceof Array) {
+            if (domains) {
+                const domain = this.getValueIgnoringCase(
+                    fieldName,
+                    domains,
+                ) as Domain;
+                if (
+                    domain?.codedValues &&
+                    domain.codedValues instanceof Array
+                ) {
                     return domain;
                 }
             }
