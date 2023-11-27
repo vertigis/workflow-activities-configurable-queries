@@ -20,7 +20,7 @@ import {
 } from "@vertigis/workflow/forms/utils";
 import GenerateWhereClause from "./GenerateQueryWhereClause";
 import Query from "@arcgis/core/rest/support/Query";
-import GetLayerCodedValues from "./GetLayerCodedValues";
+import { getCodedValues, getDefinitionExpression, getValueIgnoringCase } from "./utils";
 
 export interface QueryProperties {
     /**
@@ -41,9 +41,9 @@ export interface QueryProperties {
      */
 
     layer:
-        | __esri.FeatureLayer
-        | __esri.SubtypeGroupLayer
-        | __esri.SubtypeSublayer;
+    | __esri.FeatureLayer
+    | __esri.SubtypeGroupLayer
+    | __esri.SubtypeSublayer;
     /**
      * @description The title of the Query Form.
      * @required
@@ -96,6 +96,10 @@ export default class AddQueryElements implements IActivityHandler {
         "TimePicker",
     ];
 
+    defaultElement: defs.Element = {
+        selectionMode: "multiple",
+    };
+
     async execute(
         inputs: QueryProperties,
         context: IActivityContext,
@@ -117,6 +121,7 @@ export default class AddQueryElements implements IActivityHandler {
         let i = 0;
         const addElement = new AddFormElement();
         const setItems = new SetFormElementItems();
+
         if (!form.state["querySection"]) {
             const section = {
                 title: title,
@@ -139,42 +144,17 @@ export default class AddQueryElements implements IActivityHandler {
                     `Unsupported Form Element: ${searchField.type}`,
                 );
             }
-            let newElement: defs.Element = searchField.element
-                ? searchField.element
-                : {
-                      selectionMode: "multiple",
-                  };
+            let newElement: defs.Element = searchField.element ? searchField.element : this.defaultElement;
+            let items: Lookup<defs.Item> = {};
+
             newElement.type = searchField.type;
             newElement.rowNumber = i + 3;
             newElement.section = { name: "querySection" };
-            newElement.dependsOn = this.setCascade(
-                searchField,
-                searchFields,
-                i,
-            );
+            newElement.dependsOn = searchField.dependsOn;
             newElement.title = searchField.title;
             newElement.description = searchField.description;
+            newElement.value = searchField.value;
 
-            let items: Lookup<defs.Item> = {};
-
-            const elementHasItems = [
-                "CheckGroup",
-                "DropDownList",
-                "ItemPicker",
-                "ListBox",
-                "RadioGroup",
-            ].some((x) => x === searchField.type);
-            if (elementHasItems && !searchField.cascade) {
-                items = await this.setElementItems(
-                    where,
-                    searchField,
-                    searchFields,
-                    layer,
-                    form,
-                    false,
-                    context,
-                );
-            }
             await addElement.execute(
                 {
                     elementName: searchField.field,
@@ -184,51 +164,73 @@ export default class AddQueryElements implements IActivityHandler {
                 },
                 context,
             );
-
             newElement = form.state[searchField.field];
-            if (Object.keys(items).length != 0) {
-                await setItems.execute(
-                    {
-                        form: form,
-                        items: items,
-                        elementName: searchField.field,
-                    },
+
+            if (this.hasElementsToSet(searchField, searchFields, form)) {
+                items = await this.setElementItems(
+                    where,
+                    searchField,
+                    searchFields,
+                    layer,
+                    form,
+                    false,
                     context,
                 );
+                if (Object.keys(items).length != 0) {
+                    await setItems.execute(
+                        {
+                            form: form,
+                            items: items,
+                            elementName: searchField.field,
+                        },
+                        context,
+                    );
+                }
+                if (searchField.value) {
+                    newElement.value = searchField.value;
+                    await this.setItemState(
+                        newElement,
+                        form,
+                        searchField.field,
+                        context,
+                    );
+                    (form as any).route = true;
+                }
             }
 
-            if (searchField.value && !searchField.cascade) {
-                newElement.value = searchField.value;
-                await this.setItemState(
-                    newElement,
-                    form,
-                    searchField.field,
-                    context,
-                );
-                (form as any).route = true;
-            }
             if (searchField.events) {
                 await this.setFormItemEvent(form, searchField, context);
             }
             i++;
+
         }
         return {
             result: inputs.form,
         };
+
+
     }
 
-    private setCascade(
-        searchField: SearchField,
-        searchFields: SearchField[],
-        index: number,
-    ): string | undefined {
-        if (typeof searchField.cascade === "string") {
-            return searchField.cascade;
-        } else if (searchField.cascade === true) {
-            return searchFields[index - 1].field;
+    private hasElementsToSet(searchField: SearchField, searchFields: SearchField[], form: DisplayFormOutputs): boolean {
+
+        const elementHasItems = [
+            "CheckGroup",
+            "DropDownList",
+            "ItemPicker",
+            "ListBox",
+            "RadioGroup",
+        ].some((x) => x === searchField.type);
+
+        if (elementHasItems) {
+            if (!searchField.dependsOn) {
+                return true;
+            } else if (form.state[searchField.dependsOn].value || form.state[searchField.dependsOn].value === 0) {
+                return true;
+            }
         }
-        return undefined;
+        return false;
     }
+
     private async setItemState(
         element: defs.Element,
         form: DisplayFormOutputs,
@@ -242,7 +244,7 @@ export default class AddQueryElements implements IActivityHandler {
             element.items &&
             Object.keys(element.items).length != 0
         ) {
-            if (Array.isArray(value) && isItemsRef(value as defs.Value)) {
+            if (Array.isArray(value)) {
                 await this.setMultipleItemsState(
                     value as defs.Item[],
                     form,
@@ -316,40 +318,41 @@ export default class AddQueryElements implements IActivityHandler {
             form,
             layer,
             true,
-            fullQuery,
+            searchField.value ? true : false
         );
-        const featureLayerInfo =
-            layer.type === "subtype-sublayer" ? layer.parent : layer;
-        const codedValues = featureLayerInfo
-            ? GetLayerCodedValues.getCodedValues(
-                  featureLayerInfo,
-                  searchField.field,
-              )
-            : undefined;
         let items;
 
-        if (codedValues) {
-            const collItems = getItemsFromColl.execute(
-                {
-                    collection: codedValues.filter((x) => {
-                        return results.features.some(
-                            (y) => y.attributes[searchField.field] === x.code,
-                        );
-                    }),
-                    labelFieldName: "name",
-                    valueFieldName: "code",
-                },
-                context,
-            );
-            items = collItems.items;
-        } else {
-            const values = getItemsFromFeatures.execute({
-                features: results.features,
-                labelFieldName: searchField.field,
-                valueFieldName: searchField.field,
-            });
-            items = values.items;
+        if (results) {
+            let codeValue: number | undefined;
+            if (results.fields.some(x => x.name != searchField.field)) {
+                const f = results.fields.find(x => x.name != searchField.field);
+                if (f) {
+                    codeValue = getValueIgnoringCase(f.name, results.features[0].attributes as Record<string, any>);
+                }
+            }
+
+            const codedValues = getCodedValues(layer, searchField.field, codeValue)
+
+            if (codedValues) {
+                const collItems = getItemsFromColl.execute(
+                    {
+                        collection: codedValues,
+                        labelFieldName: "name",
+                        valueFieldName: "code",
+                    },
+                    context,
+                );
+                items = collItems.items;
+            } else {
+                const values = getItemsFromFeatures.execute({
+                    features: results.features,
+                    labelFieldName: searchField.field,
+                    valueFieldName: searchField.field,
+                });
+                items = values.items;
+            }
         }
+
         return items;
     }
 
@@ -389,7 +392,6 @@ export default class AddQueryElements implements IActivityHandler {
         let value: ElementValue | undefined;
 
         if (isDataRef(element.value)) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             value = element.value.data;
         } else if (isDateRangeRef(element.value)) {
             value = [element.value.startDate, element.value.endDate];
@@ -429,19 +431,19 @@ export default class AddQueryElements implements IActivityHandler {
         if (subtypeField) {
             outFields.push(subtypeField);
         }
-        const definitionExpression = this.getDefinitionExpression(layer);
+        const definitionExpression = getDefinitionExpression(layer);
 
         const whereClause = fullQuery
             ? genWhereClause.execute({
-                  layer: layer,
-                  queryFields: searchFields,
-                  targetForm: form,
-              })
+                layer: layer,
+                queryFields: searchFields,
+                targetForm: form,
+            })
             : {
-                  result: definitionExpression
-                      ? definitionExpression
-                      : simpleWhere,
-              };
+                result: definitionExpression
+                    ? definitionExpression
+                    : simpleWhere,
+            };
 
         return await this.queryLayer(
             layer,
@@ -475,27 +477,8 @@ export default class AddQueryElements implements IActivityHandler {
 
         return await layerToQuery.queryFeatures(query);
     }
-    private getDefinitionExpression(
-        layer:
-            | __esri.FeatureLayer
-            | __esri.SubtypeGroupLayer
-            | __esri.SubtypeSublayer,
-    ): string | undefined {
-        let expression;
-        switch (layer.type) {
-            case "subtype-sublayer":
-                expression = layer.parent.definitionExpression
-                    ? `${layer.parent.definitionExpression} AND ${layer.parent.subtypeField} = ${layer.subtypeCode}`
-                    : `${layer.parent.subtypeField} = ${layer.subtypeCode}`;
-                break;
-            case "subtype-group":
-            case "feature":
-                expression = layer.definitionExpression;
-                break;
-        }
 
-        return expression;
-    }
+
 
     private getItemKey(
         inItem: defs.Item,
