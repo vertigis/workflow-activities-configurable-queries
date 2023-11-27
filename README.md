@@ -39,9 +39,8 @@ The [Add Query Elements](../main/src/activities/AddQueryElements.ts) activity ac
   field: string,
   /* The SQL operator to apply to the field (=, !=, <, >, >=, <=, IN, and BETWEEN) (Required) */
   operator: string,
-  /* The name of the field to use as the parent in a cascading relationship.
-     When a boolean is used then the previous field is used. (Required) */
-  cascade: boolean | string,
+  /* The name of the field to use as the parent in a cascading relationship. (Optional)*/
+  dependsOn: string,
   /* The form element type to use for the search. (Required) */
   type: "AutoComplete" |
         "CheckBox" |

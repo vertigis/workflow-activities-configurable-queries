@@ -8,15 +8,14 @@
                 "field": "ASSETTYPE",
                 "title": "Asset Type",
                 "operator": "=",
-                "type": "ItemPicker",
-                "cascade": false
+                "type": "ItemPicker"
             },
             {
                 "field": "lifecyclestatus",
                 "title": "lifecyclestatus",
                 "operator": "=",
                 "type": "DropDownList",
-                "cascade": true,
+                "dependsOn": "ASSETTYPE",
                 "events": {
                     "populate": "populateEvent"
                 }
@@ -26,7 +25,6 @@
                 "title": "Install Date",
                 "operator": "=",
                 "type": "DatePicker",
-                "cascade": false,
                 "events": {
                     "changed": "changedEvent"
                 }
@@ -36,7 +34,7 @@
                 "title": "Asset Id",
                 "operator": "=",
                 "type": "DropDownList",
-                "cascade": true,
+                "dependsOn": "installdate",
                 "events": {
                     "populate": "populateEvent"
                 }
@@ -51,9 +49,7 @@
                 "field": "diameter",
                 "title": "Diameter",
                 "type": "DropDownList",
-                "operator": "=",
-                "cascade": false
-            }
+                "operator": "="            }
         ]
     }
 ]

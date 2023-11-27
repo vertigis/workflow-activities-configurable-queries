@@ -4,7 +4,7 @@ import { defs } from "@vertigis/workflow/forms/FormHost";
 export interface SearchField {
     field: string;
     operator: string;
-    cascade: boolean | string;
+    dependsOn?: string;
     type:
         | "AutoComplete"
         | "CheckBox"
@@ -23,7 +23,6 @@ export interface SearchField {
         | "TextBox"
         | "TimePicker"
         | string;
-
     title: string;
     description?: string;
     value?: defs.Value;

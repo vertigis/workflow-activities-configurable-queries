@@ -3,15 +3,13 @@
         "title": "ASSETGROUP",
         "type": "DropDownList",
         "field": "ASSETGROUP",
-        "operator": "=",
-        "cascade": false
-    },
+        "operator": "="    },
     {
         "title": "ASSETTYPE",
         "type": "DropDownList",
         "field": "ASSETTYPE",
         "operator": "=",
-        "cascade": true,
+        "dependsOn": "ASSETGROUP",
         "events": {
             "populate": "populateEvent"
         }
@@ -21,7 +19,7 @@
         "type": "DropDownList",
         "field": "ASSOCIATIONSTATUS",
         "operator": "=",
-        "cascade": true,
+        "dependsOn": "ASSETTYPE",
         "events": {
             "populate": "populateEvent",
             "changed": "changedEvent"
@@ -32,7 +30,7 @@
         "type": "DropDownList",
         "field": "FROMDEVICETERMINAL",
         "operator": "=",
-        "cascade": true,
+        "dependsOn": "ASSOCIATIONSTATUS",
         "events": {
             "populate": "populateEvent",
             "changed": "changedEvent"
@@ -43,7 +41,6 @@
         "type": "DatePicker",
         "field": "CREATIONDATE",
         "operator": "<=",
-        "cascade": false,
         "value": {
             "refValueType": "date",
             "format": "device",
@@ -59,7 +56,7 @@
         "type": "ItemPicker",
         "field": "assetid",
         "operator": "IN",
-        "cascade": true,
+        "dependsOn": "CREATIONDATE",
         "events": {
             "populate": "populateEvent",
             "changed": "changedEvent"
