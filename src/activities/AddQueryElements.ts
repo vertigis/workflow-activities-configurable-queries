@@ -345,13 +345,11 @@ export default class AddQueryElements implements IActivityHandler {
                 items = collItems.items;
             } else {
                 const filterDistinctValue = Array.from(
-                    new Set(results.features.map(
-                        (item: __esri.Graphic) => {
-                            const clone = item.clone();
-                            clone.attributes = { [searchField.field]: item.attributes[searchField.field] };
-                            return clone;
+                    new Map(results.features.map(
+                        (graphic: __esri.Graphic) => {
+                            return [ graphic.attributes[searchField.field], graphic ];
                         })
-                    )
+                    ).values()
                 );
                 const values = getItemsFromFeatures.execute({
                     features: filterDistinctValue,
