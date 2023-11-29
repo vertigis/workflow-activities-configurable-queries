@@ -344,8 +344,17 @@ export default class AddQueryElements implements IActivityHandler {
                 );
                 items = collItems.items;
             } else {
+                const filterDistinctValue = Array.from(
+                    new Set(results.features.map(
+                        (item: __esri.Graphic) => {
+                            const clone = item.clone();
+                            clone.attributes = { [searchField.field]: item.attributes[searchField.field] };
+                            return clone;
+                        })
+                    )
+                );
                 const values = getItemsFromFeatures.execute({
-                    features: results.features,
+                    features: filterDistinctValue,
                     labelFieldName: searchField.field,
                     valueFieldName: searchField.field,
                 });

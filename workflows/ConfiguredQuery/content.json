@@ -859,6 +859,39 @@
             "id": 352,
             "steps": [
                 {
+                    "action": "gcx:wf:core::Evaluate",
+                    "id": 285,
+                    "inputs": {
+                        "expression": {
+                            "accessors": [
+                                "$populateQuery",
+                                "$populateQuery",
+                                "$populateQuery",
+                                "$populateSearchField"
+                            ],
+                            "annotations": [
+                                { "count": 14, "index": 0, "kind": "idref" },
+                                { "count": 14, "index": 143, "kind": "idref" },
+                                { "count": 14, "index": 307, "kind": "idref" },
+                                { "count": 20, "index": 332, "kind": "idref" }
+                            ],
+                            "code": "$populateQuery.features = (function (features, field) {\n    var flags = {}, output = [];\n    for (var i = 0; i < features.length; i++) {\n        if (!flags[$populateQuery.features[i].attributes[field]]) {\n            flags[features[i].attributes[field]] = true;\n            output.push(features[i]);\n        }\n    }\n    return output;\n})($populateQuery.features, $populateSearchField.result.field)",
+                            "source": "$populateQuery.features=(function(features, field){\n  \n  var flags = {}, output = [];\n  for( var i=0; i< features.length; i++) {\n    if(!flags[$populateQuery.features[i].attributes[field]]){\n\n      flags[features[i].attributes[field]] = true;\n      output.push(features[i]);\n    }\n  \n  }\n return output;\n})($populateQuery.features, $populateSearchField.result.field)"
+                        }
+                    },
+                    "name": "filterDistinct",
+                    "position": "240,1310",
+                    "title": "Evaluate Expression",
+                    "transitions": [
+                        {
+                            "id": 287,
+                            "inputs": {},
+                            "position": "360,1380 360,1470",
+                            "target": { "id": 366 }
+                        }
+                    ]
+                },
+                {
                     "action": "gcx:wf:core:subworkflow:RunSubworkflow",
                     "id": 354,
                     "inputs": {
@@ -1012,7 +1045,7 @@
                         {
                             "id": 394,
                             "inputs": {},
-                            "position": "100,680 100,730",
+                            "position": "100,670 100,730",
                             "sourceConnector": "bottom",
                             "target": { "id": 362 }
                         }
@@ -1066,11 +1099,11 @@
                     "transitions": [
                         {
                             "branch": "false",
-                            "id": 400,
+                            "id": 286,
                             "inputs": {},
-                            "position": "160,1200 360,1200 360,1300",
+                            "position": "160,1200 360,1200 360,1310",
                             "sourceConnector": "right",
-                            "target": { "id": 366 },
+                            "target": { "id": 285 },
                             "targetConnector": "top"
                         },
                         {
@@ -1106,13 +1139,13 @@
                         }
                     },
                     "name": "sortedPopulateFeatures",
-                    "position": "240,1300",
+                    "position": "240,1470",
                     "title": "Sort Feature Set",
                     "transitions": [
                         {
                             "id": 404,
                             "inputs": {},
-                            "position": "360,1370 360,1420",
+                            "position": "360,1540 360,1590",
                             "sourceConnector": "bottom",
                             "target": { "id": 370 }
                         }
@@ -1175,13 +1208,13 @@
                         }
                     },
                     "name": "populateFeatureFormItems",
-                    "position": "240,1420",
+                    "position": "240,1590",
                     "title": "Get Form Element Items From Features",
                     "transitions": [
                         {
                             "id": 410,
                             "inputs": {},
-                            "position": "360,1550 360,1590",
+                            "position": "360,1720 360,1760",
                             "target": { "id": 376 }
                         }
                     ]
@@ -1284,7 +1317,7 @@
                             "source": "$populateFeatureFormItems.items"
                         }
                     },
-                    "position": "240,1590",
+                    "position": "240,1760",
                     "title": "Set Form Element Items"
                 },
                 {
@@ -3626,11 +3659,13 @@
             "id": 730
         }
     ],
-    "licenseInfo": { "licenseeId": "88cb61d6-af47-9b3e-5181-ed674c4c0815" },
+    "licenseInfo": {
+        "licenseUrl": "https://vn-demo.vertigis.com/vertigisstudio/workflow/service/auth/license"
+    },
     "references": [
         {
-            "id": 361,
-            "path": "https://localhost:5000",
+            "id": 295,
+            "path": "https://unpkg.com/@vertigis/workflow-activities-configurable-queries",
             "suite": "uuid:fc5de4bd-b399-4353-82ea-cbf393a350b3"
         }
     ],
