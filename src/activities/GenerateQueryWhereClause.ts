@@ -63,11 +63,10 @@ export default class GenerateWhereClause implements IActivityHandler {
         const definitionExpression = getDefinitionExpression(layer);
         if (definitionExpression) {
             if(where.length > 0) {
-                where = `${where} AND (${definitionExpression})`;
+                where = `(${where}) AND (${definitionExpression})`;
             } else {
                 where = `(${definitionExpression})`;
             }
-            
         }
         let fields: __esri.Field[];
         if (layer.type === "subtype-sublayer") {
@@ -132,7 +131,7 @@ export default class GenerateWhereClause implements IActivityHandler {
         }
 
         if(where.length > 0) {
-            return `${where} AND (${queryFields.field} ${queryFields.operator} ${value})`;
+            return `(${where}) AND (${queryFields.field} ${queryFields.operator} ${value})`;
         } else {
             return `(${queryFields.field} ${queryFields.operator} ${value})`;
         }
