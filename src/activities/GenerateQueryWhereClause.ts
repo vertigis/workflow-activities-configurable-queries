@@ -13,16 +13,19 @@ export interface GenerateWhereClauseInputs {
     | __esri.FeatureLayer
     | __esri.SubtypeGroupLayer
     | __esri.SubtypeSublayer;
+
     /**
      * @description The form used to collect the query inputs.
      * @required
      */
     targetForm: DisplayFormOutputs;
+
     /**
      * @description The query fields and operators used to create the where clause.  Field and Form Element Names must match.
      * @required
      */
     queryFields: QueryField[];
+    
     /**
      * @description An existing where clause (optional).  The dynamic query clause will be appended.
      */
@@ -54,17 +57,21 @@ export default class GenerateWhereClause implements IActivityHandler {
         if (!queryFields) {
             throw new Error("queryFields is required");
         }
+        
 
-        let where = whereClause && whereClause.length > 0 ? whereClause : "1=1";
+        let where = whereClause && whereClause.length > 0 ? whereClause : "";
         const definitionExpression = getDefinitionExpression(layer);
         if (definitionExpression) {
-            where = `${where} AND ${definitionExpression}`;
+            where = `${definitionExpression} AND ${where}`;
         }
         let fields: __esri.Field[];
         if (layer.type === "subtype-sublayer") {
             fields = layer.parent.fields;
         } else {
             fields = layer.fields;
+        }
+        if (!fields) {
+            throw new Error(`Provided layer ${layer.title} does not contain fields`);
         }
         return {
             result: this.setSQLValues(targetForm, where, fields, queryFields),
@@ -109,21 +116,23 @@ export default class GenerateWhereClause implements IActivityHandler {
         return undefined;
     }
 
-
     private appendToWhere(
         where: string,
         queryFields: QueryField,
         inValue: string,
     ) {
-        let fieldAndValue = "";
         let value = inValue;
         if (queryFields.operator === "IN") {
             value = `(${value})`;
         }
-        fieldAndValue = ` AND ${queryFields.field} ${queryFields.operator} ${value}`;
 
-        return `${where}${fieldAndValue}`;
+        if(where.length > 0) {
+            return `${where} AND ${queryFields.field} ${queryFields.operator} ${value}`;
+        } else {
+            return `${queryFields.field} ${queryFields.operator} ${value}`;
+        }
     }
+
     private formatValue(
         value: any,
         searchField: QueryField,
