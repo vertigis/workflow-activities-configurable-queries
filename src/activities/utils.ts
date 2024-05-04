@@ -119,14 +119,15 @@ export function getCodedValues(
     layer:
         | __esri.FeatureLayer
         | __esri.SubtypeGroupLayer
-        | __esri.SubtypeSublayer,
+        | __esri.SubtypeSublayer
+        | __esri.Sublayer,
     fieldName: string,
     typeCode?: number,
 ): CodedValue[] | undefined {
     if (!layer || !fieldName) {
         return;
     }
-    let typedLayer: __esri.FeatureLayer | __esri.SubtypeGroupLayer;
+    let typedLayer: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.Sublayer;
     let code: number | undefined;
     if (layer.type === "subtype-sublayer") {
         typedLayer = layer.parent;
@@ -147,7 +148,7 @@ export function getCodedValues(
 }
 
 export function getDomain(
-    layerInfo: __esri.FeatureLayer,
+    layerInfo: __esri.FeatureLayer | __esri.Sublayer,
     fieldName: string,
     code?: number
 ): Domain | undefined {
@@ -157,7 +158,7 @@ export function getDomain(
 
     let typeInfo: __esri.Subtype | __esri.FeatureType | undefined;
 
-    if (layerInfo.subtypes) {
+    if (layerInfo.type === "feature" && layerInfo.subtypes) {
         typeInfo = layerInfo.subtypes.find(
             (subtype) => subtype.code === code,
         );
@@ -183,7 +184,7 @@ export function getDomain(
 }
 
 export function getFieldDomain(
-    layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer,
+    layerInfo: __esri.FeatureLayer | __esri.SubtypeGroupLayer | __esri.Sublayer,
     fieldName: string,
 ): Domain | undefined {
     const fields = layerInfo.fields;
@@ -202,7 +203,8 @@ export function getDefinitionExpression(
     layer:
         | __esri.FeatureLayer
         | __esri.SubtypeGroupLayer
-        | __esri.SubtypeSublayer,
+        | __esri.SubtypeSublayer
+        | __esri.Sublayer
 ): string | undefined {
     let expression;
     switch (layer.type) {
@@ -213,6 +215,7 @@ export function getDefinitionExpression(
             break;
         case "subtype-group":
         case "feature":
+        case "sublayer":
             expression = layer.definitionExpression;
             break;
     }
