@@ -85,7 +85,8 @@ The [Configured Query Workflow](../main/workflows/ConfiguredQuery/content.json) 
 To use the Configured Query Workflow, download the content.json to your local machine and import it into your Portal using VertiGIS Studio Workflow designer.  
 
 ##### Workflow Inputs:
- - layerId (Required): The layer Id for the layer to run the stored query against.  Supported layer types include [FeatureLayer](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html), [SubtypeGroupLayer](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-SubtypeGroupLayer.html) and [SubtypeSubLayer](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-SubtypeSublayer.html).
+ - layerId (Required): The layer Id for the layer to run the stored query against.  Supported layer types include [FeatureLayer](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html), [SubtypeGroupLayer](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-SubtypeGroupLayer.html), [SubtypeSubLayer](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-SubtypeSublayer.html) and [MapImageLayer](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-MapImageLayer.html).
+ - sublayerId (Optional): The sublayer to query from a MapImageLayer.
  - formTitle (Required): The title to appear in the form.
  - formDescription (Optional): The description text to appear with the form's title.
  - searchFields (Required): An array of SearchField objects.
