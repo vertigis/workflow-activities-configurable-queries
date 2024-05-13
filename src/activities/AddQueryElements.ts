@@ -186,7 +186,7 @@ export default class AddQueryElements implements IActivityHandler {
                         context,
                     );
                 }
-                if (searchField.value) {
+                if (searchField.value || searchField.value === 0) {
                     newElement.value = searchField.value;
                     await this.setItemState(
                         newElement,
