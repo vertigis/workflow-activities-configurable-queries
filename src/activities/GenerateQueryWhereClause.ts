@@ -114,7 +114,7 @@ export default class GenerateWhereClause implements IActivityHandler {
         field: __esri.Field,
     ): string | undefined {
         const currentValue = getFormValue(formElement, queryField);
-        if (currentValue !== undefined && currentValue !== null) {
+        if (currentValue !== undefined) {
             return this.formatValue(currentValue, queryField, field);
         }
         return undefined;
