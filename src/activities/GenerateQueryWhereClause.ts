@@ -99,7 +99,7 @@ export default class GenerateWhereClause implements IActivityHandler {
                         searchField,
                         field,
                     );
-                    if (value) {
+                    if (value !== undefined) {
                         where = this.appendToWhere(where, searchField, value);
                     }
                 }
@@ -131,7 +131,7 @@ export default class GenerateWhereClause implements IActivityHandler {
         }
 
         if (where.length > 0) {
-            if (value === "NULL") {
+            if (value === null) {
                 if (queryFields.operator === "=") {
                     return `(${where}) AND (${queryFields.field} IS NULL)`;
                 } else if (queryFields.operator === "!=") {
@@ -140,7 +140,7 @@ export default class GenerateWhereClause implements IActivityHandler {
             }
             return `(${where}) AND (${queryFields.field} ${queryFields.operator} ${value})`;
         }
-        if (value === "NULL") {
+        if (value === null) {
             if (queryFields.operator === "=") {
                 return `(${queryFields.field} IS NULL)`;
             } else if (queryFields.operator === "!=") {
@@ -172,7 +172,7 @@ export default class GenerateWhereClause implements IActivityHandler {
                         }
                     }).join(",");
                 } else if (value === null) {
-                    formattedValue = "NULL";
+                    formattedValue = value;
                 } else if (searchField.operator.toUpperCase() === "LIKE") {
                     formattedValue = `%${value}%`;
                 } else {
@@ -189,7 +189,7 @@ export default class GenerateWhereClause implements IActivityHandler {
                         }
                     }).join(",");
                 } else if (value === null) {
-                    formattedValue = "NULL";
+                    formattedValue = value;
                 } else {
                     formattedValue = `${value}`;
                 }

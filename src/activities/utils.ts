@@ -51,7 +51,7 @@ export function formatNumberRange(value: defs.Value): string | undefined {
 
 export function getFormValue(formElement: defs.Element,
     queryField: SearchField): any {
-    const hasValue = formElement.value || formElement.value === 0;
+    const hasValue = formElement.value !== undefined;
 
     if (hasValue) {
         const currentValue =
