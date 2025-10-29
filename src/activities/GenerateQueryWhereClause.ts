@@ -139,15 +139,16 @@ export default class GenerateWhereClause implements IActivityHandler {
                 }
             }
             return `(${where}) AND (${queryFields.field} ${queryFields.operator} ${value})`;
-        } else {
+        }
+        if (value === "NULL") {
             if (queryFields.operator === "=") {
                 return `(${queryFields.field} IS NULL)`;
             } else if (queryFields.operator === "!=") {
                 return `(${queryFields.field} IS NOT NULL)`;
             }
         }
-        return `(${queryFields.field} ${queryFields.operator} ${value})`;
 
+        return `(${queryFields.field} ${queryFields.operator} ${value})`;
     }
 
     private formatValue(
