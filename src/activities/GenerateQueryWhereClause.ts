@@ -25,7 +25,7 @@ export interface GenerateWhereClauseInputs {
      * @required
      */
     queryFields: QueryField[];
-    
+
     /**
      * @description An existing where clause (optional).  The dynamic query clause will be appended.
      */
@@ -57,12 +57,12 @@ export default class GenerateWhereClause implements IActivityHandler {
         if (!queryFields) {
             throw new Error("queryFields is required");
         }
-        
+
 
         let where = whereClause && whereClause.length > 0 ? whereClause : "";
         const definitionExpression = getDefinitionExpression(layer);
         if (definitionExpression) {
-            if(where.length > 0) {
+            if (where.length > 0) {
                 where = `(${where}) AND (${definitionExpression})`;
             } else {
                 where = `(${definitionExpression})`;
@@ -99,7 +99,7 @@ export default class GenerateWhereClause implements IActivityHandler {
                         searchField,
                         field,
                     );
-                    if (value) {
+                    if (value !== undefined) {
                         where = this.appendToWhere(where, searchField, value);
                     }
                 }
@@ -114,7 +114,7 @@ export default class GenerateWhereClause implements IActivityHandler {
         field: __esri.Field,
     ): string | undefined {
         const currentValue = getFormValue(formElement, queryField);
-        if (currentValue) {
+        if (currentValue !== undefined) {
             return this.formatValue(currentValue, queryField, field);
         }
         return undefined;
@@ -130,11 +130,25 @@ export default class GenerateWhereClause implements IActivityHandler {
             value = `(${value})`;
         }
 
-        if(where.length > 0) {
+        if (where.length > 0) {
+            if (value === null) {
+                if (queryFields.operator === "=") {
+                    return `(${where}) AND (${queryFields.field} IS NULL)`;
+                } else if (queryFields.operator === "!=") {
+                    return `(${where}) AND (${queryFields.field} IS NOT NULL)`;
+                }
+            }
             return `(${where}) AND (${queryFields.field} ${queryFields.operator} ${value})`;
-        } else {
-            return `(${queryFields.field} ${queryFields.operator} ${value})`;
         }
+        if (value === null) {
+            if (queryFields.operator === "=") {
+                return `(${queryFields.field} IS NULL)`;
+            } else if (queryFields.operator === "!=") {
+                return `(${queryFields.field} IS NOT NULL)`;
+            }
+        }
+
+        return `(${queryFields.field} ${queryFields.operator} ${value})`;
     }
 
     private formatValue(
@@ -143,12 +157,22 @@ export default class GenerateWhereClause implements IActivityHandler {
         field: __esri.Field,
     ): string | undefined {
         let formattedValue;
+
         switch (field.type) {
             case EsriFieldType.Guid:
             case EsriFieldType.GlobalId:
             case EsriFieldType.String:
                 if (Array.isArray(value)) {
-                    formattedValue = value.map(x => `'${x}'`).join(",");
+
+                    formattedValue = value.map((x) => {
+                        if (x === null) {
+                            return "NULL";
+                        } else {
+                            return `'${x}'`;
+                        }
+                    }).join(",");
+                } else if (value === null) {
+                    formattedValue = value;
                 } else if (searchField.operator.toUpperCase() === "LIKE") {
                     formattedValue = `%${value}%`;
                 } else {
@@ -157,7 +181,15 @@ export default class GenerateWhereClause implements IActivityHandler {
                 break;
             default:
                 if (Array.isArray(value)) {
-                    formattedValue = value.join(",");
+                    formattedValue = value.map((x) => {
+                        if (x === null) {
+                            return "NULL";
+                        } else {
+                            return x;
+                        }
+                    }).join(",");
+                } else if (value === null) {
+                    formattedValue = value;
                 } else {
                     formattedValue = `${value}`;
                 }
